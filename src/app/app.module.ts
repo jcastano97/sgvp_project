@@ -1,18 +1,92 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  MatButtonModule,
+  MatCheckboxModule,
+  MatInputModule,
+  MatSelectModule,
+  MatDialogModule,
+  MatProgressBarModule,
+  MatMenuModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatTooltipModule,
+  MatStepperModule,
+  MatCardModule,
+  MatSnackBarModule,
+  MatExpansionModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatListModule
+} from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Md5 } from 'ts-md5/dist/md5';
+
+import {
+  HttpService,
+  AuthGuard,
+  PermissionsGuard,
+} from './services/services';
+
+import {
+  AppComponent,
+  HomeComponent,
+  DialogsComponent,
+  LoginComponent,
+  MenuComponent,
+  OffersComponent,
+  UsersComponent
+} from './components';
+import { CreateAdminComponent } from './create-admin/create-admin.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    DialogsComponent,
+    LoginComponent,
+    MenuComponent,
+    OffersComponent,
+    UsersComponent,
+    CreateAdminComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatProgressBarModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatStepperModule,
+    MatCardModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatListModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    HttpService,
+    AuthGuard,
+    PermissionsGuard,
+    Md5
+  ],
+  entryComponents: [
+    DialogsComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

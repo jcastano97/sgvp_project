@@ -1,0 +1,80 @@
+<app-menu></app-menu>
+<br>
+<br>
+<br>
+<div class="container">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"><img [src]="imgProfile" class="img-profile-1" id="img-profile-1"></div>
+      <mat-card-title><span *ngIf="first_name != null">{{first_name}}</span></mat-card-title>
+      <mat-card-subtitle>{{email}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        <span class="greeting font-2">{{greeting}}</span>
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button mat-raised-button class="button-change-pass" (click)="changePassWord()">
+        <mat-icon aria-label="Pass">lock</mat-icon>
+        Cambiar contraseña
+      </button>
+      <button mat-button mat-raised-button class="button-change-pass" (click)="changePhoto()">
+        <mat-icon aria-label="Pass">add_a_photo</mat-icon>
+        Cambiar foto
+      </button>
+      <input type="file" id="input-home-photo" accept="image/*" style="display: none" (change)="fileSelected($event)">
+      <br>
+    </mat-card-actions>
+  </mat-card>
+  <mat-horizontal-stepper [linear]="isLinear" *ngIf="uspss == 1">
+    <mat-step [stepControl]="basicInfoFormGroup">
+      <form [formGroup]="basicInfoFormGroup">
+        <ng-template matStepLabel>Información básica</ng-template>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="Nombres" formControlName="us_names" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="Apellidos" formControlName="us_lastnames" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="Numero de documento" formControlName="st_idnumber" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="Teléfono móvil" formControlName="st_celphone" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="Teléfono fijo" formControlName="st_phone" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="Dirección" formControlName="st_address" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <textarea matInput placeholder="Horario" class="rez_none" formControlName="st_schedule" required></textarea>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext mat-raised-button color="primary">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="documentsFormGroup">
+      <form [formGroup]="documentsFormGroup">
+        <ng-template matStepLabel>Documentos</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="Address" formControlName="secondCtrl" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Anterior</button>
+          <button mat-button matStepperNext>Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      You are now done.
+      <div>
+        <button mat-button matStepperPrevious>Anterior</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

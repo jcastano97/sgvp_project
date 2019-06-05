@@ -1,0 +1,27 @@
+.app-name
+{	
+	position: absolute;
+	right: 16px;
+	width: 80px;
+	font-size: 30px;
+}
+
+.menu-app
+{	
+	position: fixed;
+	top: 0px;
+	/*background: #83acae !important;*/
+	background: #b32929 !important;
+    color: white !important;
+    z-index: 10;
+}
+
+.menu-button-icon 
+{
+	font-size: 38px;
+}
+
+.options-menu
+{
+	margin-left: 14px;
+}

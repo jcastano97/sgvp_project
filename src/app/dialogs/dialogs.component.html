@@ -1,0 +1,54 @@
+<div *ngIf="data.typeDialog == 'alert'">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content class="font-1">{{data.msg}}</mat-dialog-content>
+  <br>
+  <mat-dialog-actions class="buttons-content">
+    <button mat-button [mat-dialog-close]="true" class="button-closed font-1">Esta bien</button>
+  </mat-dialog-actions>
+  <br>
+</div>
+<div *ngIf="data.typeDialog == 'forgot'">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content class="font-1">{{data.msg}}</mat-dialog-content>
+  <br>
+  <mat-form-field class="dialogs-input">
+    <input matInput placeholder="Correo Electrónico" type="email" [(ngModel)]="emailforgot" name="emailforgot">
+  </mat-form-field>
+  <br>
+  <mat-dialog-actions class="buttons-content">
+    <button mat-button [mat-dialog-close]="emailforgot" class="button-closed font-1">Restablecer</button>
+  </mat-dialog-actions>
+  <br>
+</div>
+<div *ngIf="data.typeDialog == 'new-company'">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content class="font-1">{{data.msg}}</mat-dialog-content>
+  <br>
+  <mat-form-field class="dialogs-input">
+    <input matInput placeholder="Correo Electrónico" type="email" [(ngModel)]="nc.emailnew" name="emailnew">
+  </mat-form-field>
+  <mat-form-field class="dialogs-input">
+    <input matInput placeholder="Contraseña" type="password" [(ngModel)]="nc.passnew" name="passnew">
+  </mat-form-field>
+  <br>
+  <mat-dialog-actions class="buttons-content">
+    <button mat-button [mat-dialog-close]="nc" class="button-closed font-1">Crear Cuenta</button>
+  </mat-dialog-actions>
+  <br>
+</div>
+<div *ngIf="data.typeDialog == 'change-password'">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content class="font-1">{{data.msg}}</mat-dialog-content>
+  <br>
+  <mat-form-field class="dialogs-input">
+    <input matInput placeholder="Contraseña antigua" type="password" [(ngModel)]="cp.passold" name="passold">
+  </mat-form-field>
+  <mat-form-field class="dialogs-input">
+    <input matInput placeholder="Contraseña nueva" type="password" [(ngModel)]="cp.passnew" name="passnew">
+  </mat-form-field>
+  <br>
+  <mat-dialog-actions class="buttons-content">
+    <button mat-button [mat-dialog-close]="cp" class="button-closed font-1">Cambiar</button>
+  </mat-dialog-actions>
+  <br>
+</div>

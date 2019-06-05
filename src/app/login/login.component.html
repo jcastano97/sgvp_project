@@ -1,0 +1,31 @@
+<div>
+  <section>
+    <img src="assets/header-login.jpg" class="header-login">
+  </section>
+  <div class="panel-login">
+    <div class="panel-login-child">
+      <img src="assets/logo-ulibre.png" class="logo-ulibre">
+      <form class="form-login">
+        <mat-form-field class="login-input">
+          <input matInput placeholder="Correo Electrónico" type="email" [(ngModel)]="username" name="username">
+        </mat-form-field>
+        <mat-form-field class="login-input">
+          <input matInput placeholder="Contraseña" type="password" [(ngModel)]="password" name="password">
+        </mat-form-field>
+        <mat-form-field class="login-input" >
+          <mat-select placeholder="Tipo de usuario"  [(ngModel)]="typeuserDefault" name="typeuser">
+            <mat-option *ngFor="let type of typeuser" [value]="type.value">
+              {{ type.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br><br><br>
+        <mat-progress-bar mode="indeterminate" class="progress-bar-1" *ngIf="login_method_state"></mat-progress-bar>
+        <button mat-raised-button  class="login-input longin-go font-1" (click)="login(username,password);">Entrar</button>
+        <br><br>
+        <button mat-raised-button  class="login-input font-1 button-new-company" *ngIf="typeuserDefault == 2" (click)="newCompany()">¿Eres empresa? - Regístrala</button>
+      </form>
+    </div>
+  </div>
+  <i class="material-icons forgot-button" matTooltip="¿Olvidaste tu contraseña?" matTooltipPosition="left" (click)="openForgot()">help</i>
+</div>

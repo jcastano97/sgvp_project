@@ -1,0 +1,162 @@
+<app-menu></app-menu>
+<br>
+<br>
+<br>
+<div class="container">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title class="font-2">
+                Usuarios
+            </mat-panel-title>
+            <mat-panel-description>
+                Nuevo usuario
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field class="login-input">
+            <input matInput placeholder="Correo Electrónico" [(ngModel)]="newu.email" name="email">
+        </mat-form-field>
+        <mat-form-field class="login-input">
+            <input matInput placeholder="Contraseña" type="password" [(ngModel)]="newu.pass" name="pass">
+        </mat-form-field>
+        <mat-form-field class="login-input" >
+            <mat-select placeholder="Tipo de usuario" [(ngModel)]="typeuserDefault" name="typeuser">
+            <mat-option *ngFor="let type of typeuser" [value]="type.value">
+            {{ type.viewValue }}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="login-input" *ngIf="typeuserDefault == '1'">
+            <mat-select placeholder="Programa" [(ngModel)]="newu.st_career"   name="program">
+            <mat-option *ngFor="let pro of programs" [value]="pro.pro_id">
+            {{ pro.pro_name }}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="login-input">
+            <input matInput placeholder="Nombres" [(ngModel)]="newu.names" name="names">
+        </mat-form-field>
+        <mat-form-field class="login-input">
+            <input matInput placeholder="Apellidos" [(ngModel)]="newu.lastnames" name="lastnames">
+        </mat-form-field>
+        <br>
+        <br>
+        <mat-progress-bar mode="indeterminate" color="warn" class="load-2" style="width: 95px;" *ngIf="newuser_method_state"></mat-progress-bar>
+        <button mat-button mat-raised-button class="button-create-user" (click)="createUser(typeuserDefault)" [disabled]="newuser_method_state">
+        <mat-icon aria-label="Pass">person_add</mat-icon>
+        Crear
+        </button>
+        <button mat-button mat-raised-button class="button-create-user-excel" (click)="createUserExcel()">
+            <mat-icon aria-label="Pass">unarchive</mat-icon>
+            Importar Estudiantes
+        </button>
+        <input type="file" (change)="filesSelectcreateUserExcel($event)">
+        <span id="input-users-excel"></span>
+    </mat-expansion-panel>
+    <br>
+    <br>
+    <mat-progress-bar mode="indeterminate" color="warn" class="load-2" *ngIf="getuser_method_state"></mat-progress-bar>
+    <div class="example-header">
+        <mat-form-field floatPlaceholder="never">
+            <input matInput #filter placeholder="Correo electrónico, cédula, NIT" [(ngModel)]="getUsersParam.text" name="filter" (ngModelChange)="searchUser($event)">
+        </mat-form-field>
+    </div>
+    <mat-form-field style="float: right;">
+        <mat-select  [(ngModel)]="getUsersParam.rol" (ngModelChange)="searchUserRol($event)" >
+        <mat-option *ngFor="let item of listFilter" [value]="item.value" >
+        <span class="dot-0" *ngIf="item.value == 0"></span>
+        <span class="dot-1" *ngIf="item.value == 1"></span>
+        <span class="dot-2" *ngIf="item.value == 2"></span>
+        <span class="dot-3" *ngIf="item.value == 3"></span>
+        <span class="dot-4" *ngIf="item.value == 4"></span>
+        <span class="dot-5" *ngIf="item.value == 5"></span>
+        <span class="dot-6" *ngIf="item.value == 6"></span>
+        {{ item.viewValue }}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <br>
+    <br><br>
+    <mat-card *ngFor="let item of users" class="car-edit">
+        <img src="{{item.us_img}}" class="img-users" *ngIf="item.us_img != null">
+        <img src="assets/profile.png" class="img-users" *ngIf="item.us_img == null">
+        <div class="content-user">
+            <b class="" style="font-size: 18px;">{{item.us_email}}</b>
+            <br>
+            <p class="es" *ngIf="item.us_type == 1">Estudiante</p>
+            <p class="em" *ngIf="item.us_type == 2">Empresa</p>
+            <p class="ad" *ngIf="item.us_type == 3">Administrador</p>
+            <p class="do" *ngIf="item.us_type == 4">Docente</p>
+            <span class="last-date" *ngIf="item.us_last_login != null">Ultimo inicio de sesión {{item.us_last_login}}</span>
+            <span class="view-u" matTooltip="Ver información de {{item.us_email}}" matTooltipPosition="left" (click)="viewUser(item)"><i class="material-icons">remove_red_eye</i></span>
+        </div>
+    </mat-card>
+    <div  *ngIf="users.length == 0" class="no_data">
+        <br>
+        <i class="material-icons no_data_icon">cloud_circle</i>
+        <br>
+        <span>No se encontraron datos para mostrar</span>
+    </div>
+    <div style="position: absolute;width: 100%;text-align: center;" *ngIf="users.length >= 10">
+        <br>
+        <span class="load_more"  (click)="getUsersMore()">Cargar mas</span>
+        <br><br><br>
+    </div>
+    <div id="view-u">
+        <br>
+        <i class="material-icons" style="font-size: 30px;color:gray;cursor: pointer;" (click)="closeviewUser()">subdirectory_arrow_right</i>
+        <hr>
+        <!-- <><><><><><><><><><><><><><><><> -->
+        <!-- INFORMACION DE ESTUDIANTE INICIO -->
+        <!-- <><><><><><><><><><><><><><><><> -->
+        <div *ngIf="currentUview.us_type == 1">
+            <div style="text-align: center;">
+                <img src="{{currentUview.us_img}}" class="img-users2" *ngIf="currentUview.us_img != null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+                <img src="assets/profile.png" class="img-users2" *ngIf="currentUview.us_img == null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+            </div>
+            <br>
+            <mat-list>
+                <mat-list-item>Nombres: &nbsp; <b>{{currentUview.us_names}}</b></mat-list-item>
+                <mat-list-item>Apellidos: &nbsp; <b>{{currentUview.us_lastnames}}</b></mat-list-item>
+                <mat-list-item>E-mail: &nbsp; <b>{{currentUview.us_email}}</b></mat-list-item>
+                <mat-list-item>Estado de cuenta: &nbsp; <b *ngIf="currentUview.us_state == 1" class="u-active">activo</b> <b *ngIf="currentUview.us_state == 0" class="u-inactive">inactivo</b> </mat-list-item>
+                <mat-list-item>
+                    Numero de identificación: &nbsp;
+                    <b *ngIf="currentUview.st_idnumber != null || currentUview.st_idnumber != '' ">{{currentUview.st_idnumber}}</b>
+                    <b *ngIf="currentUview.st_idnumber == null || currentUview.st_idnumber == '' " style="font-weight: inherit;color:red;">Falta</b>
+                </mat-list-item>
+                <mat-list-item>
+                    Carrera: &nbsp;
+                    <b *ngIf="currentUview.pro_name != null || currentUview.pro_name != '' ">{{currentUview.pro_name}}</b>
+                    <b *ngIf="currentUview.pro_name == null || currentUview.pro_name == '' " style="font-weight: inherit;color:red;">Falta</b>
+                </mat-list-item>
+                <mat-list-item>
+                    Celular: &nbsp;
+                    <b *ngIf="currentUview.st_celphone != null || currentUview.st_celphone != '' ">{{currentUview.st_celphone}}</b>
+                    <b *ngIf="currentUview.st_celphone == null || currentUview.st_celphone == '' " style="font-weight: inherit;color:red;">Falta</b>
+                </mat-list-item>
+                <mat-list-item>
+                    Telefono fijo: &nbsp;
+                    <b *ngIf="currentUview.st_phone != null || currentUview.st_phone != '' ">{{currentUview.st_phone}}</b>
+                    <b *ngIf="currentUview.st_phone == null || currentUview.st_phone == '' " style="font-weight: inherit;color:red;">Falta</b>
+                </mat-list-item>
+                <mat-list-item>
+                    Dirección: &nbsp;
+                    <b *ngIf="currentUview.st_address != null || currentUview.st_address != '' ">{{currentUview.st_address}}</b>
+                    <b *ngIf="currentUview.st_address == null || currentUview.st_address == '' " style="font-weight: inherit;color:red;">Falta</b>
+                </mat-list-item>
+                <mat-list-item>
+                    EPS: &nbsp;
+                    <b *ngIf="currentUview.st_eps != null || currentUview.st_eps != '' ">{{currentUview.st_eps}}</b>
+                    <b *ngIf="currentUview.st_eps == null || currentUview.st_eps == '' " style="font-weight: inherit;color:red;">Falta</b>
+                </mat-list-item>
+                <mat-list-item>Ultimo inicio de sesión: &nbsp; <span *ngIf="currentUview.us_last_login != null">{{currentUview.us_last_login}}</span> <span *ngIf="currentUview.us_last_login == null">Nunca</span> </mat-list-item>
+            </mat-list>
+        </div>
+        <!-- <><><><><><><><><><><><><><><><> -->
+        <!-- INFORMACION DE ESTUDIANTE FIN -->
+        <!-- <><><><><><><><><><><><><><><><> -->
+        <br><br><br><br><br>
+    </div>
+</div>
