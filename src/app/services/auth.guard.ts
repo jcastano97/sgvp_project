@@ -15,11 +15,12 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+    const userInfo = JSON.parse(localStorage.getItem('user'));
     const data = {
       function: 'Auth',
-      us_id: localStorage.getItem('us_id'),
-      token: localStorage.getItem('ustk_token'),
-      us_type: localStorage.getItem('us_type')
+      us_id: userInfo.id,
+      token: localStorage.getItem('us_token'),
+      us_type: userInfo.type
     };
     if (data.token != null) {
       return this.service.get(data).pipe(map(res => {

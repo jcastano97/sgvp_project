@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogsComponent } from '../dialogs/dialogs.component';
-import { Router } from '@angular/router';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { HttpService } from '../services/http.service';
 import { Md5 } from 'ts-md5/dist/md5';
+import {AppComponent} from '../app.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends AppComponent implements OnInit {
   private typeuser = [
     {value: '1', viewValue: 'Estudiante'},
     {value: '2', viewValue: 'Empresa'},
@@ -21,13 +19,6 @@ export class LoginComponent implements OnInit {
   private username: string;
   private password: string;
   private loginMethodState: boolean;
-
-  constructor(
-    public router: Router,
-    public dialog: MatDialog,
-    public service: HttpService,
-    public snackBar: MatSnackBar
-  ) {}
 
   ngOnInit() {
     this.username = '';
@@ -70,7 +61,9 @@ export class LoginComponent implements OnInit {
     }
 
     console.log(data);
+    console.log('pase1');
     this.service.get(data).subscribe(response => {
+      console.log('pase2');
       console.log(response);
       if (response.data === 'unauthorized') {
         this.dialog.open(DialogsComponent, {
@@ -91,13 +84,30 @@ export class LoginComponent implements OnInit {
           data: { typeDialog: 'alert', title: 'Espera...', msg: 'No se ha podido iniciar, inténtalo mas tarde'}
         });
       } else {
-        localStorage.setItem('ustk_token', response.data.ustk_token);
-        localStorage.setItem('us_email', response.additional_data.us_email);
-        localStorage.setItem('us_id', response.additional_data.us_id);
-        localStorage.setItem('us_names', response.additional_data.us_names);
-        localStorage.setItem('us_lastnames', response.additional_data.us_lastnames);
-        localStorage.setItem('us_type', response.additional_data.us_type);
-        localStorage.setItem('us_img', response.additional_data.us_img);
+        localStorage.setItem('us_token', response.ustk_token);
+        this.userInfo.id = response.additional_data.us_id ? response.additional_data.us_id : '';
+        this.userInfo.names = response.additional_data.us_names ? response.additional_data.us_names : '';
+        this.userInfo.lastNames = response.additional_data.us_lastnames ? response.additional_data.us_lastnames : '';
+        this.userInfo.img = response.additional_data.us_img ? response.additional_data.us_img : '';
+        this.userInfo.type = response.additional_data.us_type ? response.additional_data.us_type : '';
+        this.userInfo.email = response.additional_data.us_email ? response.additional_data.us_email : '';
+        if (this.userInfo.type === '1') {
+          this.userInfo.dataStudent.idNumber = response.additional_data.st_idnumber ? response.additional_data.st_idnumber : '';
+          this.userInfo.dataStudent.career = response.additional_data.st_career ? response.additional_data.st_career : '';
+          this.userInfo.dataStudent.free = response.additional_data.st_isfree ? response.additional_data.st_isfree : '';
+          this.userInfo.dataStudent.teacherAssignment = response.additional_data.st_teacherassc ?
+            response.additional_data.st_teacherassc : '';
+          this.userInfo.dataStudent.cellphone = response.additional_data.st_celphone ? response.additional_data.st_celphone : '';
+          this.userInfo.dataStudent.phone = response.additional_data.st_phone ? response.additional_data.st_phone : '';
+          this.userInfo.dataStudent.address = response.additional_data.st_address ? response.additional_data.st_address : '';
+          this.userInfo.dataStudent.hv = response.additional_data.st_hv ? response.additional_data.st_hv : '';
+          this.userInfo.dataStudent.cardid = response.additional_data.st_cardid ? response.additional_data.st_cardid : '';
+          this.userInfo.dataStudent.eps = response.additional_data.st_eps ? response.additional_data.st_eps : '';
+          this.userInfo.dataStudent.enrollment = response.additional_data.st_enrollment ? response.additional_data.st_enrollment : '';
+          this.userInfo.dataStudent.practice = response.additional_data.st_practice ? response.additional_data.st_practice : '';
+        }
+        localStorage.setItem('user', JSON.stringify(this.userInfo));
+        console.log(localStorage.getItem('user'));
         this.router.navigate(['/inicio']);
         this.snackBar.open('Bienvenid@ a SGVP ' + response.additional_data.us_names, 'Cerrar', {
           duration: 4000
@@ -176,7 +186,7 @@ export class LoginComponent implements OnInit {
                 }
               });
             } else {
-              localStorage.setItem('ustk_token', response.data.ustk_token);
+              localStorage.setItem('us_token', response.data.us_token);
               localStorage.setItem('us_email', response.additional_data.us_email);
               localStorage.setItem('us_id', response.additional_data.us_id);
               localStorage.setItem('us_type', response.additional_data.us_type);

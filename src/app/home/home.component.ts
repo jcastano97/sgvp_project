@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AppComponent, DialogsComponent } from '../app.component';
 import { FormGroup, Validators} from '@angular/forms';
 import { Md5 } from 'ts-md5/dist/md5';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -16,24 +14,31 @@ export class HomeComponent extends AppComponent implements OnInit {
   basicInfoFormGroup: FormGroup;
   documentsFormGroup: FormGroup;
   private greeting: string;
-  private imgProfile: string;
   private firstName: string;
   private userType: string;
   private email: string;
+  spinnerSendUserInfo: boolean;
+  doneSendUserInfo: boolean;
+  isLinear = false;
+  srcResult;
 
   ngOnInit( ) {
-    this.firstName = localStorage.getItem('us_names');
-    this.userType = localStorage.getItem('us_type');
-    this.email = localStorage.getItem('us_email');
+    this.userInfo = JSON.parse(localStorage.getItem('user'));
+    console.log(this.userInfo);
+    this.firstName = this.userInfo.names;
+    this.userType = this.userInfo.type;
+    this.email = this.userInfo.email;
 
     this.basicInfoFormGroup = this.formBuilder.group({
-      us_names: ['', Validators.required],
-      us_lastnames: ['', Validators.required],
-      st_idnumber: ['', Validators.required],
-      st_celphone: ['', Validators.required],
-      st_phone: ['', Validators.required],
-      st_address: ['', Validators.required],
-      st_schedule: ['', Validators.required]
+      us_email: [this.userInfo.email, Validators.required],
+      us_names: [this.userInfo.names, Validators.required],
+      us_lastNames: [this.userInfo.lastNames, Validators.required],
+      st_program: [this.userInfo.dataStudent.career, Validators.required],
+      st_idNumber: [this.userInfo.dataStudent.idNumber, Validators.required],
+      st_cellphone: [this.userInfo.dataStudent.cellphone, Validators.required],
+      st_phone: [this.userInfo.dataStudent.phone, Validators.required],
+      st_address: [this.userInfo.dataStudent.address, Validators.required],
+      st_schedule: [this.userInfo.dataStudent.schedule, Validators.required]
     });
 
     this.documentsFormGroup = this.formBuilder.group({
@@ -44,12 +49,6 @@ export class HomeComponent extends AppComponent implements OnInit {
     setInterval(() => {
       this.time();
     }, 60000);
-
-    if (localStorage.getItem('us_img') === 'null' || localStorage.getItem('us_img') === '') {
-      this.imgProfile = 'assets/profile.png';
-    } else {
-      this.imgProfile = localStorage.getItem('us_img');
-    }
   }
 
   private time() {
@@ -80,9 +79,9 @@ export class HomeComponent extends AppComponent implements OnInit {
             function: 'ChangePassWord',
             passnew: Md5.hashStr(result.passnew),
             passold: Md5.hashStr(result.passold),
-            us_id: localStorage.getItem('us_id'),
-            token: localStorage.getItem('ustk_token'),
-            us_type: localStorage.getItem('us_type')
+            us_id: this.userInfo.id,
+            token: localStorage.getItem('us_token'),
+            us_type: this.userInfo.type
           };
           this.service.update(data).subscribe(response => {
             if (response.data === 'oldpass-incorrect') {
@@ -136,9 +135,9 @@ export class HomeComponent extends AppComponent implements OnInit {
     const data = {
       function: 'ChangePhoto',
       base64Image,
-      us_id: localStorage.getItem('us_id'),
-      token: localStorage.getItem('ustk_token'),
-      us_type: localStorage.getItem('us_type')
+      us_id: this.userInfo.id,
+      token: localStorage.getItem('us_token'),
+      us_type: this.userInfo.type
     };
     console.log(data);
     this.service.update(data).subscribe(response => {
@@ -146,7 +145,8 @@ export class HomeComponent extends AppComponent implements OnInit {
       console.log(response);
       if (response.data === 'change-ok') {
         document.getElementById('img-profile-1').setAttribute('src', base64Image);
-        localStorage.setItem('us_img', base64Image);
+        this.userInfo.img = base64Image;
+        localStorage.setItem('user', JSON.stringify(this.userInfo));
         this.dialog.open(DialogsComponent, {
           width: '350px',
           height: 'auto',
@@ -160,6 +160,35 @@ export class HomeComponent extends AppComponent implements OnInit {
         });
       }
     });
+  }
+
+  public sendUserInfo() {
+    this.spinnerSendUserInfo = true;
+    setTimeout(() => {
+      this.dialog.open(DialogsComponent, {
+        width: '350px',
+        height: 'auto',
+        data: { typeDialog: 'alert', title: 'Completado', msg: 'Información actualizada'}
+      });
+      this.spinnerSendUserInfo = false;
+      this.doneSendUserInfo = true;
+    }, 1000);
+  }
+
+  public onFileSelected(name_file: string) {
+    const inputNode: any = document.querySelector('#' + name_file);
+
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.srcResult = e.target.result;
+        console.log(this.srcResult);
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+      document.querySelector('#' + name_file + '_p').textContent = inputNode.files[0].name;
+    }
   }
 
 }

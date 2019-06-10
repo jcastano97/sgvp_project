@@ -5,8 +5,8 @@
 <div class="container">
   <mat-card class="example-card">
     <mat-card-header>
-      <div mat-card-avatar class="example-header-image"><img [src]="imgProfile" class="img-profile-1" id="img-profile-1"></div>
-      <mat-card-title><span *ngIf="first_name != null">{{first_name}}</span></mat-card-title>
+      <div mat-card-avatar class="example-header-image"><img [src]="userInfo.img" class="img-profile-1" id="img-profile-1"></div>
+      <mat-card-title><span *ngIf="firstName != null">{{firstName}}</span></mat-card-title>
       <mat-card-subtitle>{{email}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -27,21 +27,27 @@
       <br>
     </mat-card-actions>
   </mat-card>
-  <mat-horizontal-stepper [linear]="isLinear" *ngIf="uspss == 1">
+  <mat-horizontal-stepper [linear]="isLinear" *ngIf="userType == 1">
     <mat-step [stepControl]="basicInfoFormGroup">
       <form [formGroup]="basicInfoFormGroup">
         <ng-template matStepLabel>Información básica</ng-template>
         <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="email" type="email" formControlName="us_email" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="Numero de documento" formControlName="st_idNumber" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
           <input matInput placeholder="Nombres" formControlName="us_names" required>
         </mat-form-field>
         <mat-form-field class="input_text_form_content">
-          <input matInput placeholder="Apellidos" formControlName="us_lastnames" required>
+          <input matInput placeholder="Apellidos" formControlName="us_lastNames" required>
         </mat-form-field>
         <mat-form-field class="input_text_form_content">
-          <input matInput placeholder="Numero de documento" formControlName="st_idnumber" required>
+          <input matInput placeholder="Programa académico" formControlName="st_program" required>
         </mat-form-field>
         <mat-form-field class="input_text_form_content">
-          <input matInput placeholder="Teléfono móvil" formControlName="st_celphone" required>
+          <input matInput placeholder="Teléfono móvil" formControlName="st_cellphone" required>
         </mat-form-field>
         <mat-form-field class="input_text_form_content">
           <input matInput placeholder="Teléfono fijo" formControlName="st_phone" required>
@@ -52,6 +58,7 @@
         <mat-form-field class="input_text_form_content">
           <textarea matInput placeholder="Horario" class="rez_none" formControlName="st_schedule" required></textarea>
         </mat-form-field>
+
         <div>
           <button mat-button matStepperNext mat-raised-button color="primary">Siguiente</button>
         </div>
@@ -60,20 +67,55 @@
     <mat-step [stepControl]="documentsFormGroup">
       <form [formGroup]="documentsFormGroup">
         <ng-template matStepLabel>Documentos</ng-template>
-        <mat-form-field>
-          <input matInput placeholder="Address" formControlName="secondCtrl" required>
-        </mat-form-field>
+
+        <div>
+          <p>Hoja de vida formato pdf</p>
+          <button type="button" mat-raised-button (click)="fileHV.click()">Choose File</button>
+          <p id="fileHV_p">{{fileHV.dirName}}</p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileHV')" #fileHV type="file" id="fileHV">
+        </div>
+
+        <div>
+          <p>Fotocopia de cedula al 150%</p>
+          <button type="button" mat-raised-button (click)="fileC.click()">Choose File</button>
+          <p id="fileC_p">{{fileHV.dirName}}</p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileC')" #fileC type="file" id="fileC">
+        </div>
+
+        <div>
+          <p>Certificado de afiliación EPS</p>
+          <button type="button" mat-raised-button (click)="fileEPS.click()">Choose File</button>
+          <p id="fileEPS_p">{{fileHV.dirName}}</p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileEPS')" #fileEPS type="file" id="fileEPS">
+        </div>
+
+        <div>
+          <p>Acta de matricula</p>
+          <button type="button" mat-raised-button (click)="fileAM.click()">Choose File</button>
+          <p id="fileAM_p">{{fileHV.dirName}}</p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileAM')" #fileAM type="file" id="fileAM">
+        </div>
+
+        <div>
+          <p>Registro de practica</p>
+          <button type="button" mat-raised-button (click)="fileRP.click()">Choose File</button>
+          <p id="fileRP_p">{{fileHV.dirName}}</p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileRP')" #fileRP type="file" id="fileRP">
+        </div>
+
         <div>
           <button mat-button matStepperPrevious>Anterior</button>
-          <button mat-button matStepperNext>Siguiente</button>
+          <button mat-button matStepperNext mat-raised-button color="primary">Siguiente</button>
         </div>
       </form>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      You are now done.
+      <ng-template matStepLabel>Enviar</ng-template>
+      <mat-spinner *ngIf="spinnerSendUserInfo"></mat-spinner>
+      <p *ngIf="doneSendUserInfo">Sus datos han sido actualizados</p>
       <div>
         <button mat-button matStepperPrevious>Anterior</button>
+        <button mat-button matStepperNext mat-raised-button color="primary" (click)="sendUserInfo()">Enviar</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

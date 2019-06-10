@@ -75,7 +75,7 @@ export class UsersComponent implements OnInit {
         function: 'NewUser',
         query: this.newU,
         us_id: localStorage.getItem('us_id'),
-        token: localStorage.getItem('ustk_token'),
+        token: localStorage.getItem('us_token'),
         us_type: localStorage.getItem('us_type')
       };
       this.newUserMethodState = true;
@@ -127,7 +127,7 @@ export class UsersComponent implements OnInit {
       offset,
       param,
       us_id: localStorage.getItem('us_id'),
-      token: localStorage.getItem('ustk_token'),
+      token: localStorage.getItem('us_token'),
       us_type: localStorage.getItem('us_type')
     };
     this.service.get(data).subscribe(res => {
@@ -180,7 +180,7 @@ export class UsersComponent implements OnInit {
     const data = {
       function: 'GetPrograms',
       us_id: localStorage.getItem('us_id'),
-      token: localStorage.getItem('ustk_token'),
+      token: localStorage.getItem('us_token'),
       us_type: localStorage.getItem('us_type')
     };
     this.service.get(data).subscribe(res => {

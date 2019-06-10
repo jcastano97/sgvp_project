@@ -11,20 +11,21 @@ export class MenuComponent extends AppComponent implements OnInit {
   private userType: string;
 
   ngOnInit() {
-    this.HCemail = localStorage.getItem('us_email');
-    this.userType = localStorage.getItem('us_type');
+    this.userInfo = JSON.parse(localStorage.getItem('user'));
+    this.HCemail = this.userInfo.email;
+    this.userType = this.userInfo.type;
   }
 
   public logout() {
     const data = {
       function: 'Logout',
-      ustk_token: localStorage.getItem('ustk_token'),
-      us_id: localStorage.getItem('us_id'),
+      us_token: localStorage.getItem('us_token'),
+      us_id: this.userInfo.id,
     };
     this.service.update(data).subscribe(response => {
       console.log(response);
-      localStorage.clear();
-      this.router.navigate(['/']);
     });
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }
