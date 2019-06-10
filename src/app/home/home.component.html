@@ -119,4 +119,14 @@
       </div>
     </mat-step>
   </mat-horizontal-stepper>
+
+  <h1>Buscar estudiante</h1>
+  <div class="row align-items-center" *ngIf="userType == 4">
+    <div class="col-10">
+      <input class="form-control" type="search" placeholder="Nombre o documento del estudiante">
+    </div>
+    <div class="col-2">
+      <button class="btn btn-lg btn-primary" type="submit">Buscar</button>
+    </div>
+  </div>
 </div>
