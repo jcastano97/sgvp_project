@@ -3,6 +3,7 @@ import { Md5 } from 'ts-md5/dist/md5';
 import { HttpService } from '../services/http.service';
 import { MatDialog } from '@angular/material';
 import { DialogsComponent } from '../dialogs/dialogs.component';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -10,16 +11,20 @@ import { DialogsComponent } from '../dialogs/dialogs.component';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent extends AppComponent implements OnInit {
   private typeUser: any;
   private typeUserDefault: any = '1';
   private newU: any;
   private newUserMethodState: boolean;
   private getUserMethodState: boolean;
   private users: any;
-  private programs: any;
+  private programs: any[];
   private totalUsers: number;
-  private readonly getUsersParam: any;
+  private getUsersParam: any = {
+    us_id: '',
+    text: '',
+    rol: ''
+  };
   private getUsersOffset: number;
   private listFilter = [
     {value: '0', viewValue: 'Todos'},
@@ -33,7 +38,8 @@ export class UsersComponent implements OnInit {
   private currentUview: any;
 
 
-  constructor( public service: HttpService, public dialog: MatDialog ) {
+  ngOnInit() {
+    this.userInfo = JSON.parse(localStorage.getItem('user'));
     this.typeUser = [
       {value: '1', viewValue: 'Estudiante'},
       {value: '2', viewValue: 'Empresa'},
@@ -44,13 +50,9 @@ export class UsersComponent implements OnInit {
       email: '',
       pass: '',
       names: '',
-      lastNames: '',
+      lastnames: '',
       us_type: '',
       st_career: ''
-    };
-    this.getUsersParam = {
-      text: '',
-      rol: '0'
     };
     this.getUsersOffset = 0;
     this.newUserMethodState = false;
@@ -63,9 +65,6 @@ export class UsersComponent implements OnInit {
     this.currentUview = { us_img: null };
   }
 
-  ngOnInit() {
-  }
-
   public createUser(typeUserDefault) {
     this.newU.us_type = typeUserDefault;
     if (this.newU.email !== '' && this.newU.pass !== '' && this.newU.names !== ''
@@ -74,13 +73,12 @@ export class UsersComponent implements OnInit {
       const data = {
         function: 'NewUser',
         query: this.newU,
-        us_id: localStorage.getItem('us_id'),
+        us_id: this.userInfo.id,
         token: localStorage.getItem('us_token'),
-        us_type: localStorage.getItem('us_type')
+        us_type: this.userInfo.type
       };
       this.newUserMethodState = true;
-      this.service.set(data).subscribe(res => {
-        const response = res.json();
+      this.service.set(data).subscribe(response => {
         setTimeout(() => {
           this.newUserMethodState = false;
         }, 500);
@@ -106,9 +104,7 @@ export class UsersComponent implements OnInit {
         };
         this.getUsers(10, this.getUsersOffset, this.getUsersParam);
       });
-
     }
-
   }
 
   public createUserExcel() {
@@ -125,13 +121,12 @@ export class UsersComponent implements OnInit {
       function: 'GetUsers',
       limit,
       offset,
-      param,
-      us_id: localStorage.getItem('us_id'),
+      param: JSON.stringify(this.getUsersParam),
+      us_id: this.userInfo.id,
       token: localStorage.getItem('us_token'),
-      us_type: localStorage.getItem('us_type')
+      us_type: this.userInfo.type
     };
-    this.service.get(data).subscribe(res => {
-      const response = res.json();
+    this.service.get(data).subscribe(response => {
       this.getUserMethodState = false;
       if (this.getUsersOffset !== 0) {
         this.users = this.users.concat(response.data);
@@ -183,8 +178,7 @@ export class UsersComponent implements OnInit {
       token: localStorage.getItem('us_token'),
       us_type: localStorage.getItem('us_type')
     };
-    this.service.get(data).subscribe(res => {
-      const response = res.json();
+    this.service.get(data).subscribe(response => {
       this.programs = response.data;
     });
   }

@@ -13,7 +13,7 @@
       <mat-card-title><span *ngIf="offer.name != null">{{offer.name}}</span></mat-card-title>
       <mat-card-subtitle>{{offer.description}}</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-actions *ngIf="offer.company_id === userInfo.id">
+    <mat-card-actions *ngIf="offer.company_id === userInfo.id || userInfo.type === 3">
       <button mat-button mat-raised-button class="button-change-pass" (click)="eliminarOferta(offer)">
         <mat-icon aria-label="Pass">lock</mat-icon>
         Eliminar

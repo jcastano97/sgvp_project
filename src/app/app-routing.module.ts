@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
-  HomeComponent, LoginComponent, OffersComponent
+  HomeComponent, LoginComponent, OffersComponent, UsersComponent
 } from './components';
 import {
   AuthGuard, PermissionsGuard
@@ -20,6 +20,11 @@ const routes: Routes = [
   {
     path: 'ofertas',
     component: OffersComponent,
+    canActivate: [ AuthGuard, PermissionsGuard ]
+  },
+  {
+    path: 'usuarios',
+    component: UsersComponent,
     canActivate: [ AuthGuard, PermissionsGuard ]
   },
   {

@@ -60,8 +60,6 @@ export class LoginComponent extends AppComponent implements OnInit {
       return false;
     }
 
-    console.log(data);
-    console.log('pase1');
     this.service.get(data).subscribe(response => {
       this.loginMethodState = false;
       console.log('pase2');
@@ -85,7 +83,7 @@ export class LoginComponent extends AppComponent implements OnInit {
           data: { typeDialog: 'alert', title: 'Espera...', msg: 'No se ha podido iniciar, inténtalo mas tarde'}
         });
       } else {
-        localStorage.setItem('us_token', response.ustk_token);
+        localStorage.setItem('us_token', response.data.ustk_token);
         this.userInfo.id = response.additional_data.us_id ? response.additional_data.us_id : '';
         this.userInfo.names = response.additional_data.us_names ? response.additional_data.us_names : '';
         this.userInfo.lastNames = response.additional_data.us_lastnames ? response.additional_data.us_lastnames : '';

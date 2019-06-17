@@ -12,8 +12,14 @@ import {HttpHeaders} from '@angular/common/http';
 })
 export class HomeComponent extends AppComponent implements OnInit {
 
+  // ESTUDIANTE
   basicInfoFormGroup: FormGroup;
   documentsFormGroup: FormGroup;
+  private usersDocente: any = [];
+  teacherAssignment: number;
+  career: string;
+  programs: any = [];
+
   basicInfoFormGroupCompany: FormGroup;
   documentsFormGroupCompany: FormGroup;
   private greeting: string;
@@ -25,23 +31,41 @@ export class HomeComponent extends AppComponent implements OnInit {
   isLinear = false;
   srcResult;
 
+  // DOCENTES
+  private getUserMethodState: boolean;
+  private getUsersParam: any;
+  private currentUview: any;
+  private getUsersOffset: number;
+  private users: any = [];
+  totalUsers = 0;
+
   ngOnInit( ) {
     this.userInfo = JSON.parse(localStorage.getItem('user'));
     console.log(this.userInfo);
+    this.getUsersParam = {
+      us_id: '',
+      text: '',
+      rol: '',
+      docente: this.userInfo.id
+    };
     this.firstName = this.userInfo.names;
     this.userType = this.userInfo.type;
     this.email = this.userInfo.email;
+    this.teacherAssignment = this.userInfo.dataStudent.teacherAssignment;
+    this.career = this.userInfo.dataStudent.career;
 
     this.basicInfoFormGroup = this.formBuilder.group({
       us_email: [this.userInfo.email, Validators.required],
       us_names: [this.userInfo.names, Validators.required],
       us_lastNames: [this.userInfo.lastNames, Validators.required],
-      st_program: [this.userInfo.dataStudent.career, Validators.required],
       st_idNumber: [this.userInfo.dataStudent.idNumber, Validators.required],
       st_cellphone: [this.userInfo.dataStudent.cellphone, Validators.required],
       st_phone: [this.userInfo.dataStudent.phone, Validators.required],
       st_address: [this.userInfo.dataStudent.address, Validators.required],
-      st_schedule: [this.userInfo.dataStudent.schedule, Validators.required]
+      st_schedule: [this.userInfo.dataStudent.schedule, Validators.required],
+      st_isfree: [this.userInfo.dataStudent.isFree],
+      st_teacher: [this.userInfo.dataStudent.teacherAssignment],
+      st_career: [this.userInfo.dataStudent.career]
     });
 
     this.documentsFormGroup = this.formBuilder.group({
@@ -65,6 +89,14 @@ export class HomeComponent extends AppComponent implements OnInit {
     setInterval(() => {
       this.time();
     }, 60000);
+
+    if (this.userInfo.type === 4) {
+      this.getUsers(10, 0);
+    }
+    if (this.userInfo.type === 1) {
+      this.getUsersDocente();
+      this.getPrograms();
+    }
   }
 
   private time() {
@@ -187,11 +219,12 @@ export class HomeComponent extends AppComponent implements OnInit {
       this.userInfo.dataStudent.idNumber = this.basicInfoFormGroup.getRawValue().st_idNumber;
       this.userInfo.names = this.basicInfoFormGroup.getRawValue().us_names;
       this.userInfo.lastNames = this.basicInfoFormGroup.getRawValue().us_lastNames;
-      this.userInfo.dataStudent.career = this.basicInfoFormGroup.getRawValue().st_program;
       this.userInfo.dataStudent.cellphone = this.basicInfoFormGroup.getRawValue().st_cellphone;
       this.userInfo.dataStudent.phone = this.basicInfoFormGroup.getRawValue().st_phone;
       this.userInfo.dataStudent.address = this.basicInfoFormGroup.getRawValue().st_address;
       this.userInfo.dataStudent.schedule = this.basicInfoFormGroup.getRawValue().st_schedule;
+      this.userInfo.dataStudent.teacherAssignment = this.teacherAssignment;
+      this.userInfo.dataStudent.career = this.career;
       data = {
         function: 'UpdateUser',
         us_id: this.userInfo.id,
@@ -237,6 +270,7 @@ export class HomeComponent extends AppComponent implements OnInit {
     }
 
     console.log(data);
+    console.log(this.userInfo);
     this.service.update(data).subscribe(response => {
       console.log('subscribe');
       console.log(response);
@@ -259,6 +293,21 @@ export class HomeComponent extends AppComponent implements OnInit {
         });
       }
     });
+  }
+
+  public changeCareer(career) {
+    console.log(career);
+    console.log(this.userInfo.dataStudent.career);
+  }
+
+  public changeFree(free) {
+    console.log(free);
+    console.log(this.userInfo.dataStudent.isFree);
+  }
+
+  public changeTeacher(teacher) {
+    console.log(teacher);
+    console.log(this.teacherAssignment);
   }
 
   public onFileSelected(nameFile: string, nameToSave: string) {
@@ -336,6 +385,79 @@ export class HomeComponent extends AppComponent implements OnInit {
         }
       });
     }
+  }
+
+  public getUsersDocente() {
+    const data = {
+      function: 'GetUsers',
+      limit: 1000,
+      offset: 0,
+      param: '{"rol": "4"}',
+      us_id: this.userInfo.id,
+      token: localStorage.getItem('us_token'),
+      us_type: this.userInfo.type
+    };
+    this.service.get(data).subscribe(response => {
+      this.usersDocente = response.data;
+    });
+  }
+
+  public getPrograms() {
+    const data = {
+      function: 'GetPrograms',
+      us_id: this.userInfo.id,
+      token: localStorage.getItem('us_token'),
+      us_type: this.userInfo.type
+    };
+    this.service.get(data).subscribe(response => {
+      this.programs = response.data;
+    });
+  }
+
+  public getUsers(limit, offset) {
+    this.getUserMethodState = true;
+    const data = {
+      function: 'GetUsers',
+      limit,
+      offset,
+      param: JSON.stringify(this.getUsersParam),
+      us_id: this.userInfo.id,
+      token: localStorage.getItem('us_token'),
+      us_type: this.userInfo.type
+    };
+    this.service.get(data).subscribe(response => {
+      this.getUserMethodState = false;
+      if (this.getUsersOffset !== 0) {
+        this.users = this.users.concat(response.data);
+      } else {
+        this.users = response.data;
+        this.totalUsers = response.data_length;
+      }
+    });
+  }
+
+  public getUsersMore() {
+    this.getUsersOffset = this.users.length;
+    this.getUsers(10, this.getUsersOffset);
+  }
+
+  public searchUser(ev) {
+    this.getUsersOffset = 0;
+    this.getUsers(10, this.getUsersOffset);
+  }
+
+  public viewUser(data) {
+
+    this.currentUview = data;
+    document.getElementById('view-u').style.width = '420px';
+    document.getElementById('view-u').style.padding = '20px';
+    console.log(data);
+
+  }
+
+  public closeviewUser() {
+    document.getElementById('view-u').style.width = '0px';
+    document.getElementById('view-u').style.padding = '0px';
   }
 
 }

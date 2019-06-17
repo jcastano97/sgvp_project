@@ -13,49 +13,44 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-form-field class="login-input">
-            <input matInput placeholder="Correo Electrónico" [(ngModel)]="newu.email" name="email">
+            <input matInput placeholder="Correo Electrónico" [(ngModel)]="newU.email" name="email">
         </mat-form-field>
         <mat-form-field class="login-input">
-            <input matInput placeholder="Contraseña" type="password" [(ngModel)]="newu.pass" name="pass">
+            <input matInput placeholder="Contraseña" type="password" [(ngModel)]="newU.pass" name="pass">
         </mat-form-field>
         <mat-form-field class="login-input" >
-            <mat-select placeholder="Tipo de usuario" [(ngModel)]="typeuserDefault" name="typeuser">
-            <mat-option *ngFor="let type of typeuser" [value]="type.value">
+            <mat-select placeholder="Tipo de usuario" [(ngModel)]="typeUserDefault" name="typeuser">
+            <mat-option *ngFor="let type of typeUser" [value]="type.value">
             {{ type.viewValue }}
             </mat-option>
             </mat-select>
         </mat-form-field>
         <br>
-        <mat-form-field class="login-input" *ngIf="typeuserDefault == '1'">
-            <mat-select placeholder="Programa" [(ngModel)]="newu.st_career"   name="program">
+        <mat-form-field class="login-input" *ngIf="typeUserDefault == '1'">
+            <mat-select placeholder="Programa" [(ngModel)]="newU.st_career"   name="program">
             <mat-option *ngFor="let pro of programs" [value]="pro.pro_id">
             {{ pro.pro_name }}
             </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field class="login-input">
-            <input matInput placeholder="Nombres" [(ngModel)]="newu.names" name="names">
+            <input matInput placeholder="Nombres" [(ngModel)]="newU.names" name="names">
         </mat-form-field>
         <mat-form-field class="login-input">
-            <input matInput placeholder="Apellidos" [(ngModel)]="newu.lastnames" name="lastnames">
+            <input matInput placeholder="Apellidos" [(ngModel)]="newU.lastnames" name="lastnames">
         </mat-form-field>
         <br>
+        Imagen: <input type="file" (change)="filesSelectcreateUserExcel($event)" accept="image/x-png,image/gif,image/jpeg">
         <br>
-        <mat-progress-bar mode="indeterminate" color="warn" class="load-2" style="width: 95px;" *ngIf="newuser_method_state"></mat-progress-bar>
-        <button mat-button mat-raised-button class="button-create-user" (click)="createUser(typeuserDefault)" [disabled]="newuser_method_state">
+        <mat-progress-bar mode="indeterminate" color="warn" class="load-2" style="width: 95px;" *ngIf="newUserMethodState"></mat-progress-bar>
+        <button mat-button mat-raised-button class="button-create-user" (click)="createUser(typeUserDefault)" [disabled]="newUserMethodState">
         <mat-icon aria-label="Pass">person_add</mat-icon>
         Crear
         </button>
-        <button mat-button mat-raised-button class="button-create-user-excel" (click)="createUserExcel()">
-            <mat-icon aria-label="Pass">unarchive</mat-icon>
-            Importar Estudiantes
-        </button>
-        <input type="file" (change)="filesSelectcreateUserExcel($event)">
-        <span id="input-users-excel"></span>
     </mat-expansion-panel>
     <br>
     <br>
-    <mat-progress-bar mode="indeterminate" color="warn" class="load-2" *ngIf="getuser_method_state"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" color="warn" class="load-2" *ngIf="getUserMethodState"></mat-progress-bar>
     <div class="example-header">
         <mat-form-field floatPlaceholder="never">
             <input matInput #filter placeholder="Correo electrónico, cédula, NIT" [(ngModel)]="getUsersParam.text" name="filter" (ngModelChange)="searchUser($event)">
