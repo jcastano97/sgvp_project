@@ -18,13 +18,13 @@ export class AppComponent {
     names: string,
     lastNames: string,
     img: string,
-    type: string,
+    type: number,
     email: string,
     dataStudent?: {
       idNumber: string,
       career: string,
-      free: boolean,
-      teacherAssignment: string,
+      isFree: number,
+      teacherAssignment: number,
       cellphone: string,
       phone: string,
       address: string,
@@ -34,19 +34,33 @@ export class AppComponent {
       eps: string,
       enrollment: string,
       practice: string
+    },
+    dataCompany?: {
+      name: string,
+      razon: string,
+      nit: string,
+      address: string,
+      phone: string,
+      commerce: string,
+      rut: string,
+      cardid: string,
+      possesion: string,
+      agreement: string,
+      resolution: string,
+      practice: string
     }
   } = {
     id: '',
     names: '',
     lastNames: '',
     img: '',
-    type: '',
+    type: 0,
     email: '',
     dataStudent: {
       idNumber: '',
       career: '',
-      free: null,
-      teacherAssignment: '',
+      isFree: 0,
+      teacherAssignment: 0,
       cellphone: '',
       phone: '',
       address: '',
@@ -55,6 +69,20 @@ export class AppComponent {
       cardid: '',
       eps: '',
       enrollment: '',
+      practice: ''
+    },
+    dataCompany: {
+      name: '',
+      razon: '',
+      nit: '',
+      address: '',
+      phone: '',
+      commerce: '',
+      rut: '',
+      cardid: '',
+      possesion: '',
+      agreement: '',
+      resolution: '',
       practice: ''
     }
   };

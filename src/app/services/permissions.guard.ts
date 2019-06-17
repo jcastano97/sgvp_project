@@ -7,10 +7,13 @@ import { Router } from '@angular/router';
 export class PermissionsGuard implements CanActivate {
   constructor(private router: Router) {}
 
+  userInfo;
+
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const ups = parseInt(localStorage.getItem('us_type'), 10);
+    this.userInfo = JSON.parse(localStorage.getItem('user'));
+    const ups = this.userInfo.type;
 
     if (state.url === '/usuarios') {
       if (ups === 3) {
@@ -20,7 +23,7 @@ export class PermissionsGuard implements CanActivate {
         return false;
       }
     } else if (state.url === '/ofertas') {
-      if (ups === 3 || ups === 2) {
+      if (ups === 1 || ups === 3 || ups === 2) {
         return true;
       } else {
         this.router.navigate(['/inicio']);

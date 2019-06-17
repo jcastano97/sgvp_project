@@ -2,6 +2,22 @@
 <br>
 <br>
 <br>
-<p>
-  offers works!
-</p>
+<div class="container">
+  <button mat-button mat-raised-button class="button-change-pass" (click)="crearOferta()">
+    <mat-icon aria-label="Pass">lock</mat-icon>
+    Crear una oferta
+  </button>
+  <mat-card *ngFor="let offer of offers">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"><img [src]="offer.img" class="img-profile-1" id="img-profile-1"></div>
+      <mat-card-title><span *ngIf="offer.name != null">{{offer.name}}</span></mat-card-title>
+      <mat-card-subtitle>{{offer.description}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions *ngIf="offer.company_id === userInfo.id">
+      <button mat-button mat-raised-button class="button-change-pass" (click)="eliminarOferta(offer)">
+        <mat-icon aria-label="Pass">lock</mat-icon>
+        Eliminar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

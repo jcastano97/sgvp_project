@@ -52,3 +52,24 @@
   </mat-dialog-actions>
   <br>
 </div>
+<div *ngIf="data.typeDialog == 'new-offer'">
+  <h2 mat-dialog-title>{{data.title}}</h2>
+  <mat-dialog-content class="font-1">{{data.msg}}</mat-dialog-content>
+  <br>
+  <mat-form-field class="dialogs-input">
+    <input matInput placeholder="Nombre de la oferta" type="text" [(ngModel)]="no.name" name="name">
+  </mat-form-field>
+  <mat-form-field class="dialogs-input">
+    <textarea matInput placeholder="Descripción" class="rez_none" [(ngModel)]="no.description" required></textarea>
+  </mat-form-field>
+  <button mat-button mat-raised-button class="button-change-pass" (click)="changePhoto()">
+    <mat-icon aria-label="Pass">add_a_photo</mat-icon>
+    Fotografía
+  </button>
+  <input type="file" id="input-home-photo" accept="image/*" style="display: none" (change)="fileSelected($event)">
+  <br>
+  <mat-dialog-actions class="buttons-content">
+    <button mat-button [mat-dialog-close]="no" class="button-closed font-1">Crear Oferta</button>
+  </mat-dialog-actions>
+  <br>
+</div>

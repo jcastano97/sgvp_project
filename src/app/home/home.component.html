@@ -69,38 +69,50 @@
         <ng-template matStepLabel>Documentos</ng-template>
 
         <div>
-          <p>Hoja de vida formato pdf</p>
+          <p>
+            Hoja de vida formato pdf
+          </p>
+
           <button type="button" mat-raised-button (click)="fileHV.click()">Choose File</button>
-          <p id="fileHV_p">{{fileHV.dirName}}</p>
-          <input style="visibility: hidden" (change)="onFileSelected('fileHV')" #fileHV type="file" id="fileHV">
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.hv" href="{{this.userInfo.dataStudent.hv}}" class="pl-2">{{this.userInfo.dataStudent.hv}}</a>
+          <p id="fileHV_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileHV', 'hv.pdf')" #fileHV type="file" id="fileHV" accept="application/pdf">
         </div>
 
         <div>
-          <p>Fotocopia de cedula al 150%</p>
+          <p>Fotocopia de cedula al 150% formato pdf</p>
           <button type="button" mat-raised-button (click)="fileC.click()">Choose File</button>
-          <p id="fileC_p">{{fileHV.dirName}}</p>
-          <input style="visibility: hidden" (change)="onFileSelected('fileC')" #fileC type="file" id="fileC">
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.cardid" href="{{this.userInfo.dataStudent.cardid}}" class="pl-2">{{this.userInfo.dataStudent.cardid}}</a>
+          <p id="fileC_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileC', 'cardid.pdf')" #fileC type="file" id="fileC" accept="application/pdf">
         </div>
 
         <div>
           <p>Certificado de afiliación EPS</p>
           <button type="button" mat-raised-button (click)="fileEPS.click()">Choose File</button>
-          <p id="fileEPS_p">{{fileHV.dirName}}</p>
-          <input style="visibility: hidden" (change)="onFileSelected('fileEPS')" #fileEPS type="file" id="fileEPS">
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.eps" href="{{this.userInfo.dataStudent.eps}}" class="pl-2">{{this.userInfo.dataStudent.eps}}</a>
+          <p id="fileEPS_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileEPS', 'eps.pdf')" #fileEPS type="file" id="fileEPS" accept="application/pdf">
         </div>
 
         <div>
           <p>Acta de matricula</p>
           <button type="button" mat-raised-button (click)="fileAM.click()">Choose File</button>
-          <p id="fileAM_p">{{fileHV.dirName}}</p>
-          <input style="visibility: hidden" (change)="onFileSelected('fileAM')" #fileAM type="file" id="fileAM">
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.enrollment" href="{{this.userInfo.dataStudent.enrollment}}" class="pl-2">{{this.userInfo.dataStudent.enrollment}}</a>
+          <p id="fileAM_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileAM', 'enrollment.pdf')" #fileAM type="file" id="fileAM" accept="application/pdf">
         </div>
 
         <div>
-          <p>Registro de practica</p>
+          <p>
+            Registro de practica / <a target="_self"  href="/assets/documents/formato-registro-practicante2.doc" download="formato-registro-practicante2.doc">
+              <i class="fa fa-download fa-2x text-primary" aria-hidden="true"></i> Descargar formato
+            </a>
+          </p>
           <button type="button" mat-raised-button (click)="fileRP.click()">Choose File</button>
-          <p id="fileRP_p">{{fileHV.dirName}}</p>
-          <input style="visibility: hidden" (change)="onFileSelected('fileRP')" #fileRP type="file" id="fileRP">
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.practice" href="{{this.userInfo.dataStudent.practice}}" class="pl-2">{{this.userInfo.dataStudent.practice}}</a>
+          <p id="fileRP_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileRP', 'practice.doc')" #fileRP type="file" id="fileRP" accept="application/msword">
         </div>
 
         <div>
@@ -120,7 +132,113 @@
     </mat-step>
   </mat-horizontal-stepper>
 
-  <h1>Buscar estudiante</h1>
+  <mat-horizontal-stepper [linear]="isLinear" *ngIf="userType == 2">
+    <mat-step [stepControl]="basicInfoFormGroupCompany">
+      <form [formGroup]="basicInfoFormGroupCompany">
+        <ng-template matStepLabel>Información básica</ng-template>
+        <mat-form-field class="input_text_form_content">
+          <input matInput placeholder="email" type="email" formControlName="us_email" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input type="text" matInput placeholder="Nombres representante" formControlName="us_names" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input type="text" matInput placeholder="Apellidos representante" formControlName="us_lastNames" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input type="text" matInput placeholder="Nombre compañia" formControlName="comin_name" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input type="text" matInput placeholder="Razón social" formControlName="comin_razon" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input type="text" matInput placeholder="NIT" formControlName="comin_nit" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input type="text" matInput placeholder="Dirección" formControlName="comin_address" required>
+        </mat-form-field>
+        <mat-form-field class="input_text_form_content">
+          <input type="text" matInput placeholder="Teléfono fijo" formControlName="comin_phone" required>
+        </mat-form-field>
+
+        <div>
+          <button mat-button matStepperNext mat-raised-button color="primary">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="documentsFormGroupCompany">
+      <form [formGroup]="documentsFormGroupCompany">
+        <ng-template matStepLabel>Documentos</ng-template>
+
+        <div *ngIf="this.userInfo.dataCompany.razon === 'pública'">
+          <p>
+            Cámara de comercio formato pdf
+          </p>
+
+          <button type="button" mat-raised-button (click)="fileCC.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataCompany.commerce" href="{{this.userInfo.dataCompany.commerce}}" class="pl-2">{{this.userInfo.dataCompany.commerce}}</a>
+          <p id="fileCC_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileCC', 'commerce.pdf')" #fileCC type="file" id="fileCC" accept="application/pdf">
+        </div>
+
+        <div *ngIf="this.userInfo.dataCompany.razon === 'pública'">
+          <p>RUT formato pdf</p>
+          <button type="button" mat-raised-button (click)="fileRUT.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataCompany.rut" href="{{this.userInfo.dataCompany.rut}}" class="pl-2">{{this.userInfo.dataCompany.rut}}</a>
+          <p id="fileRUT_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileRUT', 'rut.pdf')" #fileRUT type="file" id="fileRUT" accept="application/pdf">
+        </div>
+
+        <div>
+          <p>Fotocopia cedula representante legal 150% formato pdf</p>
+          <button type="button" mat-raised-button (click)="fileC.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataCompany.cardid" href="{{this.userInfo.dataCompany.cardid}}" class="pl-2">{{this.userInfo.dataCompany.cardid}}</a>
+          <p id="fileC_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileC', 'cardid.pdf')" #fileC type="file" id="fileC" accept="application/pdf">
+        </div>
+
+        <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
+          <p>Acta de posesión (representante legal) formato pdf</p>
+          <button type="button" mat-raised-button (click)="filePOS.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataCompany.possesion" href="{{this.userInfo.dataCompany.possesion}}" class="pl-2">{{this.userInfo.dataCompany.possesion}}</a>
+          <p id="filePOS_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('filePOS', 'possesion.pdf')" #filePOS type="file" id="filePOS" accept="application/pdf">
+        </div>
+
+        <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
+          <p>Convenio marco (si existe) formato pdf</p>
+          <button type="button" mat-raised-button (click)="fileCM.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataCompany.agreement" href="{{this.userInfo.dataCompany.agreement}}" class="pl-2">{{this.userInfo.dataCompany.agreement}}</a>
+          <p id="fileCM_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileCM', 'conveniomarco.pdf')" #fileCM type="file" id="fileCM" accept="application/pdf">
+        </div>
+
+        <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
+          <p>Decreto o resolución de la dependencia formato pdf</p>
+          <button type="button" mat-raised-button (click)="fileDD.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataCompany.resolution" href="{{this.userInfo.dataCompany.resolution}}" class="pl-2">{{this.userInfo.dataCompany.resolution}}</a>
+          <p id="fileDD_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileDD', 'decretodep.pdf')" #fileDD type="file" id="fileDD" accept="application/pdf">
+        </div>
+
+        <div>
+          <button mat-button matStepperPrevious>Anterior</button>
+          <button mat-button matStepperNext mat-raised-button color="primary">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Enviar</ng-template>
+      <mat-spinner *ngIf="spinnerSendUserInfo"></mat-spinner>
+      <p *ngIf="doneSendUserInfo">Sus datos han sido actualizados</p>
+      <div>
+        <button mat-button matStepperPrevious>Anterior</button>
+        <button mat-button matStepperNext mat-raised-button color="primary" (click)="sendUserInfo()">Enviar</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  <h1 *ngIf="userType == 4">Buscar estudiante</h1>
   <div class="row align-items-center" *ngIf="userType == 4">
     <div class="col-10">
       <input class="form-control" type="search" placeholder="Nombre o documento del estudiante">

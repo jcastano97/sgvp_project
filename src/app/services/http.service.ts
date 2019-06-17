@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class HttpService {
   public options: any;
 
   constructor(private http: HttpClient) {
-    this.ServerUrl = 'http://190.114.255.122/SGVP-BackEnd/handler.php';
+    this.ServerUrl = 'http://localhost/SGVP-BackEnd/handler.php'; // 'http://190.114.255.122/SGVP-BackEnd/handler.php';
     this.headers = new Headers({ 'Content-Type': 'application/json' });
   }
 
@@ -30,5 +30,18 @@ export class HttpService {
     additionalData = JSON.stringify(additionalData);
     this.options = { headers: this.headers };
     return this.http.put(`${this.ServerUrl}`, additionalData, this.options);
+  }
+
+  public sendData(userInfo: any, formData: FormData, nameToSave: string): Observable<any> {
+    const httpOptions = new HttpHeaders({
+        additional: JSON.stringify({
+          function: 'SaveFile',
+          us_id: userInfo.id,
+          token: localStorage.getItem('us_token'),
+          us_type: userInfo.type,
+          file_name: nameToSave
+        })
+      });
+    return this.http.post('http://localhost:80/SGVP-BackEnd/handler.php', formData, { headers: httpOptions });
   }
 }

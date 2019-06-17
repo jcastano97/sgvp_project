@@ -12,11 +12,11 @@
          <mat-icon>home</mat-icon>
          <span>Inicio</span>
       </button>
-      <button mat-menu-item routerLink="/usuarios" routerLinkActive="active-menu" *ngIf="uspss == 3">
+      <button mat-menu-item routerLink="/usuarios" routerLinkActive="active-menu" *ngIf="userType == 3">
          <mat-icon>recent_actors</mat-icon>
          <span>Usuarios</span>
       </button>
-      <button mat-menu-item  *ngIf="uspss == 3 || uspss == 2" routerLink="/ofertas" routerLinkActive="active-menu">
+      <button mat-menu-item  *ngIf="userType == 1 || userType == 3 || userType == 2" routerLink="/ofertas" routerLinkActive="active-menu">
          <mat-icon>local_offer</mat-icon>
          <span>Ofertas</span>
       </button>
