@@ -20,8 +20,11 @@ export class HomeComponent extends AppComponent implements OnInit {
   career: string;
   programs: any = [];
 
+  // COMPAÑIA
   basicInfoFormGroupCompany: FormGroup;
   documentsFormGroupCompany: FormGroup;
+  razon: string = 'privada';
+
   private greeting: string;
   private firstName: string;
   private userType: number;
@@ -53,6 +56,7 @@ export class HomeComponent extends AppComponent implements OnInit {
     this.email = this.userInfo.email;
     this.teacherAssignment = this.userInfo.dataStudent.teacherAssignment;
     this.career = this.userInfo.dataStudent.career;
+    this.razon = this.userInfo.dataCompany.razon;
 
     this.basicInfoFormGroup = this.formBuilder.group({
       us_email: [this.userInfo.email, Validators.required],
@@ -76,7 +80,7 @@ export class HomeComponent extends AppComponent implements OnInit {
       us_names: [this.userInfo.names, Validators.required],
       us_lastNames: [this.userInfo.lastNames, Validators.required],
       comin_name: [this.userInfo.dataCompany.name, Validators.required],
-      comin_razon: [this.userInfo.dataCompany.razon, Validators.required],
+      comin_razon: [this.userInfo.dataCompany.razon],
       comin_nit: [this.userInfo.dataCompany.nit, Validators.required],
       comin_address: [this.userInfo.dataCompany.address, Validators.required],
       comin_phone: [this.userInfo.dataCompany.phone, Validators.required]
@@ -295,6 +299,13 @@ export class HomeComponent extends AppComponent implements OnInit {
     });
   }
 
+  public changeRazon(razon) {
+    console.log(razon);
+    this.razon = razon;
+    this.userInfo.dataCompany.razon = razon;
+    console.log(this.userInfo.dataCompany.razon);
+  }
+
   public changeCareer(career) {
     console.log(career);
     console.log(this.userInfo.dataStudent.career);
@@ -310,7 +321,7 @@ export class HomeComponent extends AppComponent implements OnInit {
     console.log(this.teacherAssignment);
   }
 
-  public onFileSelected(nameFile: string, nameToSave: string) {
+  public onFileSelected(nameFile: string, nameToSave: string, studentId?: number) {
     const inputNode: any = document.querySelector('#' + nameFile);
     document.querySelector('#' + nameFile + '_p').textContent = inputNode.files[0].name;
     console.log(inputNode.files);
@@ -320,7 +331,7 @@ export class HomeComponent extends AppComponent implements OnInit {
       const formData: FormData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
       console.log(formData.getAll('file'));
-      this.service.sendData(this.userInfo, formData, nameToSave).subscribe(response => {
+      this.service.sendData(this.userInfo, formData, nameToSave, studentId).subscribe(response => {
         console.log('subscribe');
         console.log(response);
         if (response.data === 'ok') {
@@ -367,6 +378,9 @@ export class HomeComponent extends AppComponent implements OnInit {
           if (nameToSave === 'decretodep.pdf') {
             this.userInfo.dataCompany.resolution = response.url;
             localStorage.setItem('user', JSON.stringify(this.userInfo));
+          }
+          if (nameToSave === 'seguimiento.doc') {
+            location.reload();
           }
           this.dialog.open(DialogsComponent, {
             width: '350px',

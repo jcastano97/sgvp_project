@@ -171,8 +171,15 @@
         <mat-form-field class="input_text_form_content">
           <input type="text" matInput placeholder="Nombre compañia" formControlName="comin_name" required>
         </mat-form-field>
-        <mat-form-field class="input_text_form_content">
-          <input type="text" matInput placeholder="Razón social" formControlName="comin_razon" required>
+        <mat-form-field class="login-input">
+          <mat-select placeholder="Razón social" formControlName="comin_razon" [(ngModel)]="razon" (ngModelChange)="changeRazon(razon)">
+            <mat-option value="privada">
+              Privada
+            </mat-option>
+            <mat-option value="publica">
+              Pública
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <mat-form-field class="input_text_form_content">
           <input type="text" matInput placeholder="NIT" formControlName="comin_nit" required>
@@ -193,7 +200,7 @@
       <form [formGroup]="documentsFormGroupCompany">
         <ng-template matStepLabel>Documentos</ng-template>
 
-        <div *ngIf="this.userInfo.dataCompany.razon === 'pública'">
+        <div *ngIf="this.userInfo.dataCompany.razon === 'publica'">
           <p>
             Cámara de comercio formato pdf
           </p>
@@ -204,7 +211,7 @@
           <input style="visibility: hidden" (change)="onFileSelected('fileCC', 'commerce.pdf')" #fileCC type="file" id="fileCC" accept="application/pdf">
         </div>
 
-        <div *ngIf="this.userInfo.dataCompany.razon === 'pública'">
+        <div *ngIf="this.userInfo.dataCompany.razon === 'publica'">
           <p>RUT formato pdf</p>
           <button type="button" mat-raised-button (click)="fileRUT.click()">Choose File</button>
           <a target="_blank" *ngIf="this.userInfo.dataCompany.rut" href="{{this.userInfo.dataCompany.rut}}" class="pl-2">{{this.userInfo.dataCompany.rut}}</a>
@@ -346,6 +353,29 @@
           </mat-list-item>
           <mat-list-item>Ultimo inicio de sesión: &nbsp; <span *ngIf="currentUview.us_last_login != null">{{currentUview.us_last_login}}</span> <span *ngIf="currentUview.us_last_login == null">Nunca</span> </mat-list-item>
         </mat-list>
+        <div *ngIf="userInfo.type === 4">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{currentUview.tracing.length}} documentos de seguimiento subidos.
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p *ngIf="currentUview.tracing.length === 0">No hay elementos que mostrar</p>
+            <mat-card *ngFor="let item of currentUview.tracing">
+              <a href="{{item.tst_document}}">{{item.tst_document}}</a>
+            </mat-card>
+          </mat-expansion-panel>
+          <div>
+            <p>
+              Subir un nuevo documento de seguimiento
+            </p>
+
+            <button type="button" mat-raised-button (click)="fileSEG.click()">Choose File</button>
+            <a target="_blank" *ngIf="currentUview.seguimiento" href="{{currentUview.seguimiento}}" class="pl-2">{{currentUview.seguimiento}}</a>
+            <p id="fileSEG_p"></p>
+            <input style="visibility: hidden" (change)="onFileSelected('fileSEG', 'seguimiento.doc', currentUview.us_id)" #fileSEG type="file" id="fileSEG" accept="application/msword">
+          </div>
+        </div>
       </div>
       <!-- <><><><><><><><><><><><><><><><> -->
       <!-- INFORMACION DE ESTUDIANTE FIN -->

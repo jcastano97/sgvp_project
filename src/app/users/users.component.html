@@ -98,7 +98,7 @@
         <span class="load_more"  (click)="getUsersMore()">Cargar mas</span>
         <br><br><br>
     </div>
-    <div id="view-u">
+    <div id="view-u" *ngIf="currentUview !== null">
         <br>
         <i class="material-icons" style="font-size: 30px;color:gray;cursor: pointer;" (click)="closeviewUser()">subdirectory_arrow_right</i>
         <hr>
@@ -154,4 +154,63 @@
         <!-- <><><><><><><><><><><><><><><><> -->
         <br><br><br><br><br>
     </div>
+  <div id="view-c" *ngIf="currentCview !== null">
+    <br>
+    <i class="material-icons" style="font-size: 30px;color:gray;cursor: pointer;" (click)="closeviewCompany()">subdirectory_arrow_right</i>
+    <hr>
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <!-- INFORMACION DE COMPAÑIA -->
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <div *ngIf="currentCview.us_type == 2">
+      <div style="text-align: center;">
+        <img src="{{currentCview.us_img}}" class="img-users2" *ngIf="currentCview.us_img != null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+        <img src="assets/profile.png" class="img-users2" *ngIf="currentCview.us_img == null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+      </div>
+      <br>
+      <mat-list>
+        <mat-list-item>Nombre compañia: &nbsp; <b>{{currentCview.comin_name}}</b></mat-list-item>
+        <mat-list-item>E-mail: &nbsp; <b>{{currentCview.us_email}}</b></mat-list-item>
+        <mat-list-item>
+          Telefono: &nbsp;
+          <b *ngIf="currentCview.comin_phone != null || currentCview.comin_phone != '' ">{{currentCview.comin_phone}}</b>
+          <b *ngIf="currentCview.comin_phone == null || currentCview.comin_phone == '' " style="font-weight: inherit;color:red;">Falta</b>
+        </mat-list-item>
+        <mat-list-item>
+          Dirección: &nbsp;
+          <b *ngIf="currentCview.comin_address != null || currentCview.comin_address != '' ">{{currentCview.comin_address}}</b>
+          <b *ngIf="currentCview.comin_address == null || currentCview.comin_address == '' " style="font-weight: inherit;color:red;">Falta</b>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <!-- INFORMACION DE COMPAÑIA -->
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <br><br><br><br><br>
+  </div>
+  <div id="view-other">
+    <br>
+    <i class="material-icons" style="font-size: 30px;color:gray;cursor: pointer;" (click)="closeviewOtherUser()">subdirectory_arrow_right</i>
+    <hr>
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <!-- INFORMACION DE USUARIO -->
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <div *ngIf="currentOtherUserview.us_type == 3 || currentOtherUserview.us_type == 4">
+      <div style="text-align: center;">
+        <img src="{{currentOtherUserview.us_img}}" class="img-users2" *ngIf="currentOtherUserview.us_img != null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+        <img src="assets/profile.png" class="img-users2" *ngIf="currentOtherUserview.us_img == null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+      </div>
+      <br>
+      <mat-list>
+        <mat-list-item>Nombres: &nbsp; <b>{{currentOtherUserview.us_names}}</b></mat-list-item>
+        <mat-list-item>Apellidos: &nbsp; <b>{{currentOtherUserview.us_lastnames}}</b></mat-list-item>
+        <mat-list-item>E-mail: &nbsp; <b>{{currentOtherUserview.us_email}}</b></mat-list-item>
+        <mat-list-item>Estado de cuenta: &nbsp; <b *ngIf="currentOtherUserview.us_state == 1" class="u-active">activo</b> <b *ngIf="currentOtherUserview.us_state == 0" class="u-inactive">inactivo</b> </mat-list-item>
+        <mat-list-item>Ultimo inicio de sesión: &nbsp; <span *ngIf="currentUview.us_last_login != null">{{currentUview.us_last_login}}</span> <span *ngIf="currentUview.us_last_login == null">Nunca</span> </mat-list-item>
+      </mat-list>
+    </div>
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <!-- INFORMACION DE USUARIO -->
+    <!-- <><><><><><><><><><><><><><><><> -->
+    <br><br><br><br><br>
+  </div>
 </div>

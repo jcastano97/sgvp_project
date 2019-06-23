@@ -35,7 +35,9 @@ export class UsersComponent extends AppComponent implements OnInit {
     {value: '5', viewValue: 'Est. con Contrato'},
     {value: '6', viewValue: 'Est. sin Contrato'}
   ];
-  private currentUview: any;
+  private currentUview: any = null;
+  private currentCview: any = null;
+  private currentOtherUserview: any = null;
 
 
   ngOnInit() {
@@ -63,6 +65,8 @@ export class UsersComponent extends AppComponent implements OnInit {
     this.getPrograms();
     this.getUsers(10, this.getUsersOffset, this.getUsersParam);
     this.currentUview = { us_img: null };
+    this.currentCview = { us_img: null };
+    this.currentOtherUserview = { us_img: null };
   }
 
   public createUser(typeUserDefault) {
@@ -156,12 +160,20 @@ export class UsersComponent extends AppComponent implements OnInit {
 
 
   public viewUser(data) {
-
-    this.currentUview = data;
-    document.getElementById('view-u').style.width = '420px';
-    document.getElementById('view-u').style.padding = '20px';
+    if (data.us_type === 1) {
+      this.currentUview = data;
+      document.getElementById('view-u').style.width = '420px';
+      document.getElementById('view-u').style.padding = '20px';
+    } else if (data.us_type === 2) {
+      this.currentCview = data;
+      document.getElementById('view-c').style.width = '420px';
+      document.getElementById('view-c').style.padding = '20px';
+    } else {
+      this.currentOtherUserview = data;
+      document.getElementById('view-other').style.width = '420px';
+      document.getElementById('view-other').style.padding = '20px';
+    }
     console.log(data);
-
   }
 
   public closeviewUser() {
@@ -169,6 +181,15 @@ export class UsersComponent extends AppComponent implements OnInit {
     document.getElementById('view-u').style.padding = '0px';
   }
 
+  public closeviewCompany() {
+    document.getElementById('view-c').style.width = '0px';
+    document.getElementById('view-c').style.padding = '0px';
+  }
+
+  public closeviewOtherUser() {
+    document.getElementById('view-other').style.width = '0px';
+    document.getElementById('view-other').style.padding = '0px';
+  }
 
   public getPrograms() {
 

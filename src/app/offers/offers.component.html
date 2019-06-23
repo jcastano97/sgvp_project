@@ -1,23 +1,202 @@
 <app-menu></app-menu>
 <br>
 <br>
-<br>
 <div class="container">
-  <button mat-button mat-raised-button class="button-change-pass" (click)="crearOferta()">
+  <mat-expansion-panel *ngIf="userInfo.type === 3">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{acceptedAplications.length}} aplicaciones por aceptar
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p *ngIf="acceptedAplications.length === 0">No hay elementos que mostrar</p>
+    <mat-card *ngFor="let item of acceptedAplications">
+      <table style="width:100%">
+        <tr style="padding-bottom: 15px">
+          <th>Oferta</th>
+          <th>Compañia</th>
+          <th>Estudiante</th>
+        </tr>
+        <tr>
+          <td>
+            <p>Nombre: <strong>{{item.offer.name}}</strong></p>
+            <p>{{item.offer.description}}</p>
+          </td>
+          <td>
+            <p>Nombre: <strong>{{item.offer.comin_name}}</strong></p>
+            <p>email: {{item.offer.us_email_c}}</p>
+          </td>
+          <td>
+            <p>Nombre: <strong>{{item.application.us_names}}</strong></p>
+            <p>email: {{item.application.us_email}}</p>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <button mat-button mat-raised-button class="button-change-pass" (click)="aceptarNuevoPracticante(item)">
+              <mat-icon aria-label="Pass">done</mat-icon>
+              Aceptar
+            </button>
+            <button mat-button mat-raised-button class="button-change-pass" (click)="rechazarNuevoPracticante(item)">
+              <mat-icon aria-label="Pass">close</mat-icon>
+              Rechazar
+            </button>
+          </td>
+        </tr>
+      </table>
+    </mat-card>
+  </mat-expansion-panel>
+  <br>
+  <button mat-button mat-raised-button class="button-change-pass" (click)="crearOferta()" *ngIf="userInfo.type === 2 || userInfo.type === 3">
     <mat-icon aria-label="Pass">lock</mat-icon>
     Crear una oferta
   </button>
+  <p class="text-center" *ngIf="offers.length === 0">Aún no tienes ofertas</p>
   <mat-card *ngFor="let offer of offers">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"><img [src]="offer.img" class="img-profile-1" id="img-profile-1"></div>
       <mat-card-title><span *ngIf="offer.name != null">{{offer.name}}</span></mat-card-title>
       <mat-card-subtitle>{{offer.description}}</mat-card-subtitle>
+      <span *ngIf="userInfo.type === 1 || userInfo.type === 3" class="view-c" matTooltip="Ver información de {{offer.us_email_c}}" matTooltipPosition="left" (click)="viewCompany(offer)"><i class="material-icons">remove_red_eye</i></span>
     </mat-card-header>
-    <mat-card-actions *ngIf="offer.company_id === userInfo.id || userInfo.type === 3">
-      <button mat-button mat-raised-button class="button-change-pass" (click)="eliminarOferta(offer)">
-        <mat-icon aria-label="Pass">lock</mat-icon>
+    <mat-card-content *ngIf="userInfo.type === 2 || userInfo.type === 3" style="margin-bottom: 0">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{offer.applications.length}} Aplicaciones a la oferta
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p *ngIf="offer.applications.length === 0">No hay elementos que mostrar</p>
+        <mat-card *ngFor="let user of offer.applications" class="car-edit">
+          <img src="{{user.us_img}}" class="img-users" *ngIf="user.us_img != null">
+          <img src="assets/profile.png" class="img-users" *ngIf="user.us_img == null">
+          <div class="content-user">
+            <b class="" style="font-size: 18px;">{{user.us_email}}</b>
+            <br>
+            <p class="es">Estudiante</p>
+            <p *ngIf="user.state == 0">Estado: <span class="espera">EN ESPERA</span></p>
+            <p *ngIf="user.state == 1">Estado: <span class="aceptado">ACEPTADO (esperando confirmación del administrador)</span></p>
+            <p *ngIf="user.state == 2">Estado: <span class="rechazado">RECHAZADO</span></p>
+            <p *ngIf="user.state == 3">Estado: <span class="practicante">PRACTICANTE</span></p>
+            <span class="view-u" matTooltip="Ver información de {{user.us_email}}" matTooltipPosition="left" (click)="viewUser(user)"><i class="material-icons">remove_red_eye</i></span>
+          </div>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-card-content>
+    <div class="content" *ngIf="offer.state !== null">
+      <p *ngIf="offer.state == 0 && userInfo.dataStudent.isFree === 1">Estado: <span class="espera">EN ESPERA</span></p>
+      <p *ngIf="offer.state == 1 && userInfo.dataStudent.isFree === 1">Estado: <span class="aceptado">ACEPTADO (esperando confirmación del administrador)</span></p>
+      <p *ngIf="offer.state == 2 && userInfo.dataStudent.isFree === 1">Estado: <span class="rechazado">RECHAZADO</span></p>
+      <p *ngIf="offer.state == 3">Estado: <span class="practicante">PRACTICANTE</span></p>
+    </div>
+    <mat-card-actions>
+      <button mat-button mat-raised-button class="button-change-pass" (click)="eliminarOferta(offer)" *ngIf="offer.company_id === userInfo.id || userInfo.type === 3">
+        <mat-icon aria-label="Pass">delete</mat-icon>
         Eliminar
+      </button>
+      <button mat-button mat-raised-button class="button-change-pass" (click)="aplicarOferta(offer)" *ngIf="userInfo.type === 1 && userInfo.dataStudent.isFree === 1 && offer.offer_student_id === null">
+        <mat-icon aria-label="Pass">done</mat-icon>
+        Aplicar a la oferta
+      </button>
+      <button mat-button mat-raised-button class="button-change-pass" (click)="noAplicarOferta(offer)" *ngIf="offer.state == 0 && userInfo.dataStudent.isFree === 1 && userInfo.type === 1 && offer.offer_student_id">
+        <mat-icon aria-label="Pass">delete</mat-icon>
+        Eliminar aplicación a la oferta
       </button>
     </mat-card-actions>
   </mat-card>
+</div>
+
+
+<div id="view-u">
+  <br>
+  <i class="material-icons" style="font-size: 30px;color:gray;cursor: pointer;" (click)="closeviewUser()">subdirectory_arrow_right</i>
+  <hr>
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <!-- INFORMACION DE ESTUDIANTE INICIO -->
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <div *ngIf="currentUview">
+    <div style="text-align: center;">
+      <img src="{{currentUview.us_img}}" class="img-users2" *ngIf="currentUview.us_img != null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+      <img src="assets/profile.png" class="img-users2" *ngIf="currentUview.us_img == null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+    </div>
+    <br>
+    <mat-list>
+      <mat-list-item>Nombres: &nbsp; <b>{{currentUview.us_names}}</b></mat-list-item>
+      <mat-list-item>Apellidos: &nbsp; <b>{{currentUview.us_lastnames}}</b></mat-list-item>
+      <mat-list-item>E-mail: &nbsp; <b>{{currentUview.us_email}}</b></mat-list-item>
+      <mat-list-item>Estado de cuenta: &nbsp; <b *ngIf="currentUview.us_state == 1" class="u-active">activo</b> <b *ngIf="currentUview.us_state == 0" class="u-inactive">inactivo</b> </mat-list-item>
+      <mat-list-item>
+        Numero de identificación: &nbsp;
+        <b *ngIf="currentUview.st_idnumber != null || currentUview.st_idnumber != '' ">{{currentUview.st_idnumber}}</b>
+        <b *ngIf="currentUview.st_idnumber == null || currentUview.st_idnumber == '' " style="font-weight: inherit;color:red;">Falta</b>
+      </mat-list-item>
+      <mat-list-item>
+        Carrera: &nbsp;
+        <b *ngIf="currentUview.st_career != null || currentUview.st_career != '' ">{{currentUview.st_career}}</b>
+        <b *ngIf="currentUview.st_career == null || currentUview.st_career == '' " style="font-weight: inherit;color:red;">Falta</b>
+      </mat-list-item>
+      <mat-list-item>
+        Celular: &nbsp;
+        <b *ngIf="currentUview.st_celphone != null || currentUview.st_celphone != '' ">{{currentUview.st_celphone}}</b>
+        <b *ngIf="currentUview.st_celphone == null || currentUview.st_celphone == '' " style="font-weight: inherit;color:red;">Falta</b>
+      </mat-list-item>
+      <mat-list-item>
+        Telefono fijo: &nbsp;
+        <b *ngIf="currentUview.st_phone != null || currentUview.st_phone != '' ">{{currentUview.st_phone}}</b>
+        <b *ngIf="currentUview.st_phone == null || currentUview.st_phone == '' " style="font-weight: inherit;color:red;">Falta</b>
+      </mat-list-item>
+      <mat-list-item>
+        Dirección: &nbsp;
+        <b *ngIf="currentUview.st_address != null || currentUview.st_address != '' ">{{currentUview.st_address}}</b>
+        <b *ngIf="currentUview.st_address == null || currentUview.st_address == '' " style="font-weight: inherit;color:red;">Falta</b>
+      </mat-list-item>
+      <mat-list-item *ngIf="currentUview.state === 0">
+        <button mat-button mat-raised-button class="button-change-pass" (click)="aceptarAplicante(currentUview)">
+          <mat-icon aria-label="Pass">done</mat-icon>
+          Aceptar
+        </button>
+        <button mat-button mat-raised-button class="button-change-pass" (click)="rechazarAplicante(currentUview)">
+          <mat-icon aria-label="Pass">close</mat-icon>
+          Rechazar
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <!-- INFORMACION DE ESTUDIANTE FIN -->
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <br><br><br><br><br>
+</div>
+
+<div id="view-c">
+  <br>
+  <i class="material-icons" style="font-size: 30px;color:gray;cursor: pointer;" (click)="closeviewCompany()">subdirectory_arrow_right</i>
+  <hr>
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <!-- INFORMACION DE COMPAÑIA -->
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <div *ngIf="currentCview">
+    <div style="text-align: center;">
+      <img src="{{currentCview.us_img_c}}" class="img-users2" *ngIf="currentCview.us_img_c != null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+      <img src="assets/profile.png" class="img-users2" *ngIf="currentCview.us_img_c == null" style="border:solid;border-color:#ff4081;border-width: 4px;">
+    </div>
+    <br>
+    <mat-list>
+      <mat-list-item>Nombre compañia: &nbsp; <b>{{currentCview.comin_name}}</b></mat-list-item>
+      <mat-list-item>E-mail: &nbsp; <b>{{currentCview.us_email_c}}</b></mat-list-item>
+      <mat-list-item>
+        Telefono: &nbsp;
+        <b *ngIf="currentCview.comin_phone != null || currentCview.comin_phone != '' ">{{currentCview.comin_phone}}</b>
+        <b *ngIf="currentCview.comin_phone == null || currentCview.comin_phone == '' " style="font-weight: inherit;color:red;">Falta</b>
+      </mat-list-item>
+      <mat-list-item>
+        Dirección: &nbsp;
+        <b *ngIf="currentCview.comin_address != null || currentCview.comin_address != '' ">{{currentCview.comin_address}}</b>
+        <b *ngIf="currentCview.comin_address == null || currentCview.comin_address == '' " style="font-weight: inherit;color:red;">Falta</b>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <!-- INFORMACION DE COMPAÑIA -->
+  <!-- <><><><><><><><><><><><><><><><> -->
+  <br><br><br><br><br>
 </div>
