@@ -1,8 +1,39 @@
+<style>
+  td, th {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+</style>
 <app-menu></app-menu>
 <br>
 <br>
 <br>
 <div class="container">
+    <div>
+      <button mat-button mat-raised-button class="button-create-user-excel" (click)="fileExcel.click()">
+        <mat-icon aria-label="Pass">unarchive</mat-icon>
+        Importar Estudiantes
+      </button>
+      <a target="_blank" *ngIf="this.userInfo.dataStudent.hv" href="{{this.userInfo.dataStudent.hv}}" class="pl-2">{{this.userInfo.dataStudent.hv}}</a>
+      <p id="fileExcel_p"></p>
+      <input #fileExcel id="fileExcel" style="visibility: hidden" type="file" (change)="onFileChange($event)" multiple="false" />
+      <br>
+      <table class="sjs-table" *ngIf="data">
+        <tr>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Carrera</th>
+          <th>Correo</th>
+        </tr>
+        <tr *ngFor="let row of data">
+          <td *ngFor="let val of row">
+            {{val}}
+          </td>
+        </tr>
+      </table>
+      <button mat-button mat-raised-button style="margin-top: 10px" *ngIf="dataUsers" (click)="saveUsers()">Guardar usuarios</button>
+    </div>
+    <br>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title class="font-2">

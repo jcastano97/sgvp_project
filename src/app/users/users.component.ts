@@ -5,6 +5,10 @@ import { MatDialog } from '@angular/material';
 import { DialogsComponent } from '../dialogs/dialogs.component';
 import { AppComponent } from '../app.component';
 
+import * as XLSX from 'xlsx';
+
+type AOA = any[][];
+
 
 @Component({
   selector: 'app-users',
@@ -38,6 +42,11 @@ export class UsersComponent extends AppComponent implements OnInit {
   private currentUview: any = null;
   private currentCview: any = null;
   private currentOtherUserview: any = null;
+
+  data: AOA;
+  dataUsers: any;
+  wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
+  fileName = 'SheetJS.xlsx';
 
 
   ngOnInit() {
@@ -201,6 +210,112 @@ export class UsersComponent extends AppComponent implements OnInit {
     };
     this.service.get(data).subscribe(response => {
       this.programs = response.data;
+    });
+  }
+
+  onFileChange(evt: any) {
+    const inputNode: any = document.querySelector('#fileExcel');
+    document.querySelector('#fileExcel_p').textContent = inputNode.files[0].name;
+    /* wire up file reader */
+    const target: DataTransfer = (evt.target) as DataTransfer;
+    if (target.files.length !== 1) { throw new Error('Cannot use multiple files'); }
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      /* read workbook */
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+
+      /* grab first sheet */
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+      /* save data */
+      const data = XLSX.utils.sheet_to_json(ws, {header: 1});
+      const validate = this.validateUsers('1', data);
+      this.data = (data) as AOA;
+      if (validate.state === 'ok') {
+        this.dataUsers = validate.data;
+      } else {
+        console.log(validate);
+      }
+    };
+    reader.readAsBinaryString(target.files[0]);
+  }
+
+  validateUsers(type: '1', data: any) {
+    let response: any = { state: 'ok' };
+    const colums = data[0];
+    data.splice(0, 1);
+    if (colums[0] !== 'nombres') {
+      response = { state: 'error', message: 'El formato del excel no coincide, la columna 1 fila 1 debe contener los nombres' };
+    }
+    if (colums[1] !== 'apellidos') {
+      response = { state: 'error', message: 'El formato del excel no coincide, la columna 2 fila 1 debe contener los apellidos' };
+    }
+    if (colums[2] !== 'carrera') {
+      response = { state: 'error', message: 'El formato del excel no coincide, la columna 3 fila 1 debe contener la carrera' };
+    }
+    if (colums[3] !== 'correo') {
+      response = { state: 'error', message: 'El formato del excel no coincide, la columna 4 fila 1 debe contener el correo' };
+    }
+    if (response.state === 'ok') {
+      response.data = [];
+      for (const x in data) {
+        console.log(data[x]);
+        const user: any = {};
+        if (data[x][0] && data[x][0] !== '') {
+          user.names = data[x][0];
+        } else {
+          response = { state: 'error', message: 'El formato del excel no coincide, la columna 1 fila ' + x +
+              ' debe contener un nombre valido del usuario' };
+          break;
+        }
+        if (data[x][1] && data[x][1] !== '') {
+          user.lastnames = data[x][1];
+        } else {
+          response = { state: 'error', message: 'El formato del excel no coincide, la columna 2 fila ' + x +
+              ' debe contener un apellido valido del usuario' };
+          break;
+        }
+        if (data[x][2] && data[x][2] !== '') {
+          user.career = data[x][2];
+        } else {
+          response = { state: 'error', message: 'El formato del excel no coincide, la columna 3 fila ' + x +
+              ' debe contener una carrera valida del usuario' };
+          break;
+        }
+        if (data[x][3] && data[x][3] !== '') {
+          user.email = data[x][3];
+        } else {
+          response = { state: 'error', message: 'El formato del excel no coincide, la columna 4 fila ' + x +
+              ' debe contener un correo valido del usuario' };
+          break;
+        }
+        user.password = 'e10adc3949ba59abbe56e057f20f883e';
+        response.data.push(user);
+      }
+    }
+    return response;
+  }
+
+  saveUsers() {
+    console.log('saveUsers');
+    console.log(this.dataUsers);
+    const data = {
+      function: 'NewUsers',
+      param: '{ "data": ' + JSON.stringify(this.dataUsers) + '}',
+      us_id: this.userInfo.id,
+      token: localStorage.getItem('us_token'),
+      us_type: this.userInfo.type
+    };
+    this.service.set(data).subscribe(response => {
+      console.log('ok');
+      console.log(response);
+      this.dialog.open(DialogsComponent, {
+        width: '350px',
+        height: 'auto',
+        data: { typeDialog: 'alert', title: 'Los usuarios han sido creados', msg: response.data}
+      });
     });
   }
 }

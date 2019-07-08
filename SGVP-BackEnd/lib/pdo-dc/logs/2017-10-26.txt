@@ -1,0 +1,256 @@
+Time : 13:00:26
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LEF JOIN student_info AS ST 
+					ON US.us_id = ST.st_usersid 
+					WHERE US.us_' at line 38
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login, 
+					CI.comin_id, 
+					CI.comin_usersid, 
+					CI.comin_name, 
+					CI.comin_nit, 
+					CI.comin_address, 
+					CI.comin_phone, 
+					CI.comin_commerce, 
+					CI.comin_cardid, 
+					CI.comin_possesion, 
+					CI.comin_id, 
+					CI.comin_agreement, 
+					CI.comin_resolution, 
+					ST.st_id, 
+					ST.st_usersid, 
+					ST.st_idnumber, 
+					ST.st_career, 
+					ST.st_celphone, 
+					ST.st_phone, 
+					ST.st_address, 
+					ST.st_schedule, 
+					ST.st_hv, 
+					ST.st_cardid, 
+					ST.st_eps, 
+					ST.st_enrollment, 
+					ST.st_practice 
+					FROM users AS US  
+					LEFT JOIN company_info AS CI  
+					ON US.us_id = CI.comin_usersid 
+					LEF JOIN student_info AS ST 
+					ON US.us_id = ST.st_usersid 
+					WHERE US.us_id != 1 
+ 
+					 LIMIT 10
+
+Time : 12:59:22
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.comin_id, 
+					CI.comin_usersid, 
+					CI.comin_name, 
+					CI.comin_nit, 
+			' at line 10
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					CI.comin_id, 
+					CI.comin_usersid, 
+					CI.comin_name, 
+					CI.comin_nit, 
+					CI.comin_address, 
+					CI.comin_phone, 
+					CI.comin_commerce, 
+					CI.comin_cardid, 
+					CI.comin_possesion, 
+					CI.comin_id, 
+					CI.comin_agreement, 
+					CI.comin_resolution, 
+					ST.st_id, 
+					ST.st_usersid, 
+					ST.st_idnumber, 
+					ST.st_career, 
+					ST.st_celphone, 
+					ST.st_phone, 
+					ST.st_address, 
+					ST.st_schedule, 
+					ST.st_hv, 
+					ST.st_cardid, 
+					ST.st_eps, 
+					ST.st_enrollment, 
+					ST.st_practice 
+					FROM users AS US  
+					LEFT JOIN company_info AS CI  
+					ON US.us_id = CI.comin_usersid 
+					LEF JOIN student_info AS ST 
+					ON US.us_id = ST.st_usersid 
+					WHERE US.us_id != 1 
+ 
+					 LIMIT 10
+
+Time : 12:58:53
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.comin_id, 
+					CI.comin_usersid, 
+					CI.comin_name, 
+					CI.comin_nit, 
+			' at line 10
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					CI.comin_id, 
+					CI.comin_usersid, 
+					CI.comin_name, 
+					CI.comin_nit, 
+					CI.comin_address, 
+					CI.comin_phone, 
+					CI.comin_commerce, 
+					CI.comin_cardid, 
+					CI.comin_possesion, 
+					CI.comin_id, 
+					CI.comin_agreement, 
+					CI.comin_resolution, 
+					ST.st_id, 
+					ST.st_usersid, 
+					ST.st_idnumber, 
+					ST.st_career, 
+					ST.st_celphone, 
+					ST.st_phone, 
+					ST.st_address, 
+					ST.st_schedule, 
+					ST.st_hv, 
+					ST.st_cardid, 
+					ST.st_eps, 
+					ST.st_enrollment, 
+					ST.st_practice, 
+					FROM users AS US  
+					LEFT JOIN company_info AS CI  
+					ON US.us_id = CI.comin_usersid 
+					LEF JOIN student_info AS ST 
+					ON US.us_id = ST.st_usersid 
+					WHERE US.us_id != 1 
+ 
+					 LIMIT 10
+
+Time : 12:45:36
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"$limit"' at line 11
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US  
+					 LIMIT "$limit"
+
+Time : 12:44:25
+SQLSTATE[42000]: Syntax error or access violation: 1327 Undeclared variable: $limit
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US  
+					 LIMIT $limit
+
+Time : 12:42:32
+SQLSTATE[42000]: Syntax error or access violation: 1327 Undeclared variable: $limit
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US  
+					 LIMIT $limit
+
+Time : 12:41:52
+SQLSTATE[42000]: Syntax error or access violation: 1327 Undeclared variable: $limit
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US WHERE 1 
+					 LIMIT $limit
+
+Time : 12:40:54
+SQLSTATE[42000]: Syntax error or access violation: 1327 Undeclared variable: $limit
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US 
+					 LIMIT $limit
+
+Time : 12:39:19
+SQLSTATE[42000]: Syntax error or access violation: 1327 Undeclared variable: $limit
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US 
+					 LIMIT $limit OFFSET $offset
+
+Time : 12:38:47
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"$limit" OFFSET "$offset"' at line 11
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US 
+					 LIMIT "$limit" OFFSET "$offset"
+
+Time : 12:36:50
+SQLSTATE[42000]: Syntax error or access violation: 1327 Undeclared variable: $limit
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login 
+					FROM users AS US 
+					 LIMIT $limit OFFSET $offset

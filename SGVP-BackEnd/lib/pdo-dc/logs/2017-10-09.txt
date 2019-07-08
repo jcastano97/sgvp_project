@@ -1,0 +1,7 @@
+Time : 22:16:14
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ustk_id' in 'field list'
+Raw SQL : SELECT ustk_id FROM users_tokens WHERE ustk_us_id = '3' AND ustk_token = 'ustk_token'
+
+Time : 22:15:40
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ustk_id' in 'field list'
+Raw SQL : SELECT ustk_id FROM users_tokens WHERE ustk_us_id = '3' AND ustk_token = 'ustk_token'

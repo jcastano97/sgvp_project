@@ -1,0 +1,2 @@
+Time : 23:46:22
+SQLSTATE[HY000] [2002] No such file or directory

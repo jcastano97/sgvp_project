@@ -24,6 +24,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Md5 } from 'ts-md5/dist/md5';
+import { SheetJSComponent } from './sheetjs.component';
 
 import {
   HttpService,
@@ -51,7 +52,8 @@ import { CreateAdminComponent } from './create-admin/create-admin.component';
     MenuComponent,
     OffersComponent,
     UsersComponent,
-    CreateAdminComponent
+    CreateAdminComponent,
+    SheetJSComponent
   ],
   imports: [
     BrowserModule,

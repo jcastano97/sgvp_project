@@ -1,0 +1,26 @@
+Time : 14:56:30
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:30
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:24
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:24
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:20
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:15
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:15
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:11
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+
+Time : 14:56:06
+SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty

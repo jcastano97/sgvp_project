@@ -1,0 +1,105 @@
+Time : 18:45:12
+SQLSTATE[42S22]: Column not found: 1054 Unknown column '$us_id' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != $us_id
+
+Time : 18:44:58
+SQLSTATE[42S22]: Column not found: 1054 Unknown column '$us_id' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != $us_id
+
+Time : 18:44:27
+SQLSTATE[42S22]: Column not found: 1054 Unknown column '$us_id' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != $us_id
+
+Time : 18:03:50
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY us_id ASC' at line 44
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login, 
+					CI.comin_id, 
+					CI.comin_usersid, 
+					CI.comin_name, 
+					CI.comin_nit, 
+					CI.comin_address, 
+					CI.comin_phone, 
+					CI.comin_commerce, 
+					CI.comin_cardid, 
+					CI.comin_possesion, 
+					CI.comin_id, 
+					CI.comin_agreement, 
+					CI.comin_resolution, 
+					ST.st_id, 
+					ST.st_usersid, 
+					ST.st_idnumber, 
+					ST.st_career, 
+					ST.st_isfree, 
+					ST.st_teacherassc, 
+					ST.st_celphone, 
+					ST.st_phone, 
+					ST.st_address, 
+					ST.st_schedule, 
+					ST.st_hv, 
+					ST.st_cardid, 
+					ST.st_eps, 
+					ST.st_enrollment, 
+					ST.st_practice 
+					FROM users AS US  
+					LEFT JOIN company_info AS CI  
+					ON US.us_id = CI.comin_usersid 
+					LEFT JOIN student_info AS ST 
+					ON US.us_id = ST.st_usersid 
+					WHERE US.us_id != 1 
+ 
+					 LIMIT 10 ORDER BY us_id ASC
+
+Time : 18:03:33
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY US.us_id ASC' at line 44
+Raw SQL : SELECT  
+					US.us_id, 
+					US.us_email, 
+					US.us_names, 
+					US.us_lastnames, 
+					US.us_img, 
+					US.us_type, 
+					US.us_state, 
+					US.us_last_login, 
+					CI.comin_id, 
+					CI.comin_usersid, 
+					CI.comin_name, 
+					CI.comin_nit, 
+					CI.comin_address, 
+					CI.comin_phone, 
+					CI.comin_commerce, 
+					CI.comin_cardid, 
+					CI.comin_possesion, 
+					CI.comin_id, 
+					CI.comin_agreement, 
+					CI.comin_resolution, 
+					ST.st_id, 
+					ST.st_usersid, 
+					ST.st_idnumber, 
+					ST.st_career, 
+					ST.st_isfree, 
+					ST.st_teacherassc, 
+					ST.st_celphone, 
+					ST.st_phone, 
+					ST.st_address, 
+					ST.st_schedule, 
+					ST.st_hv, 
+					ST.st_cardid, 
+					ST.st_eps, 
+					ST.st_enrollment, 
+					ST.st_practice 
+					FROM users AS US  
+					LEFT JOIN company_info AS CI  
+					ON US.us_id = CI.comin_usersid 
+					LEFT JOIN student_info AS ST 
+					ON US.us_id = ST.st_usersid 
+					WHERE US.us_id != 1 
+ 
+					 LIMIT 10 ORDER BY US.us_id ASC

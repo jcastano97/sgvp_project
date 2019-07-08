@@ -1,0 +1,11 @@
+Time : 20:34:15
+SQLSTATE[HY000] [1044] Access denied for user 'sgvp_user'@'localhost' to database 'sgvp'
+
+Time : 20:32:18
+SQLSTATE[HY000] [1044] Access denied for user 'sgvp_user'@'%' to database 'sgvp'
+
+Time : 20:26:07
+SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+
+Time : 20:25:48
+SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)

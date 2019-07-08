@@ -120,6 +120,20 @@ switch ($params->getmethod()) {
 							print json_encode($func_status); 
 						}
 					break;
+
+					case 'NewUsers':
+
+						$auth = db_Auth($decode_json);
+						if($auth == 'unauthorized')
+						{
+							print json_encode(array('data' => 'unauthorized'));
+						}
+						else
+						{
+							$func_status = db_NewUsers($decode_json);
+							print json_encode($func_status);
+						}
+					break;
 					
 					case 'NewOffer':
 

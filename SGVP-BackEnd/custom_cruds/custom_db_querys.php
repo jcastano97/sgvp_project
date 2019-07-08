@@ -315,6 +315,53 @@ function db_ChangePhoto($data)
 
 
 
+function db_NewUsers($data)
+{
+
+	$db = new Db();
+	$zone = zoneH();
+	date_default_timezone_set($zone);
+	$decode_json = json_decode($data['param'], True);
+	$message = ""; 
+
+	for($i=0 ; $i<count($decode_json['data']) ; $i++){
+
+        $us_email =  $decode_json['data'][$i]['email'];
+		$us_pass =  $decode_json['data'][$i]['password'];
+		$us_names =  $decode_json['data'][$i]['names'];
+		$us_lastnames =  $decode_json['data'][$i]['lastnames'];
+		$us_type = 1;
+		$st_career =  $decode_json['data'][$i]['career'];
+
+		$SQL = "SELECT us_id FROM users WHERE us_email = '$us_email' AND us_type = '$us_type' ";
+		$query_res = $db->query($SQL);
+		if(!empty($query_res))
+		{
+			$message = $message."El correo $us_email para el usuario $us_names $us_lastnames ya se encuentra registrado, ";
+		}
+		else
+		{
+			$SQL = "INSERT INTO users(us_email, us_pass, us_names, us_lastnames, us_type) VALUES ('$us_email','$us_pass','$us_names','$us_lastnames','$us_type')";
+			$query_res = $db->query($SQL);
+			if($us_type == 2){
+				//CREAR EN LA TABLA COMPANY INFO
+				$us_id = $query_res;
+		   		$SQL3 = "INSERT INTO company_info(comin_usersid) VALUES ('$us_id')";
+		   		$query_res3 = $db->query($SQL3);
+	   			///
+			}
+			if($us_type == 1){
+				//CREAR EN LA TABLA STUDENT INFO
+				$us_id = $query_res;
+		   		$SQL3 = "INSERT INTO student_info(st_usersid,st_career) VALUES ('$us_id','$st_career')";
+		   		$query_res3 = $db->query($SQL3);
+	   			///
+			}
+		}
+    }
+	return array('data' => $message);
+}
+
 function db_NewUser($data)
 {
 
@@ -690,7 +737,6 @@ function db_GetOffers($data)
 					OF.company_id,
 					OF_ST.offer_student_id,
 					OF_ST.student_id,
-					OF_ST.offer_id,
 					OF_ST.date,
 					OF_ST.state,
 					US_C.us_email as us_email_c,
@@ -713,7 +759,7 @@ function db_GetOffers($data)
 					LEFT JOIN company_info AS CI
 					ON OF.company_id = CI.comin_usersid
 					LEFT JOIN offer_student AS OF_ST
-					ON OF.offer_id = OF_ST.offer_id
+					ON OF_ST.offer_id = OF.offer_id AND OF_ST.student_id = $us_id
 					";
 		$query_res = $db->query($SQL);
 	} else if ($us_type == '2') {

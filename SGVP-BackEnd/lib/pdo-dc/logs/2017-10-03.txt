@@ -1,0 +1,7 @@
+Time : 20:35:40
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'users_nickname' in 'where clause'
+Raw SQL : SELECT * FROM users WHERE users_nickname = ''
+
+Time : 20:33:57
+SQLSTATE[3D000]: Invalid catalog name: 1046 No database selected
+Raw SQL : SELECT * FROM users WHERE users_nickname = ''

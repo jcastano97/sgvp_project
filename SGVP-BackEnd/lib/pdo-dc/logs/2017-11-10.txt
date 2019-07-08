@@ -1,0 +1,27 @@
+Time : 11:10:25
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'US.us_email' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != 1  AND US.us_email LIKE '%wew241%' OR ST.st_idnumber = 'wew241'
+
+Time : 11:10:24
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'US.us_email' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != 1  AND US.us_email LIKE '%wew24%' OR ST.st_idnumber = 'wew24'
+
+Time : 11:10:24
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'US.us_email' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != 1  AND US.us_email LIKE '%wew2%' OR ST.st_idnumber = 'wew2'
+
+Time : 11:10:24
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'US.us_email' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != 1  AND US.us_email LIKE '%wew%' OR ST.st_idnumber = 'wew'
+
+Time : 11:10:24
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'US.us_email' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != 1  AND US.us_email LIKE '%we%' OR ST.st_idnumber = 'we'
+
+Time : 11:10:22
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'US.us_email' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != 1  AND US.us_email LIKE '%w%' OR ST.st_idnumber = 'w'
+
+Time : 11:10:21
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'US.us_email' in 'where clause'
+Raw SQL : SELECT COUNT(*) AS data_length FROM users WHERE us_id != 1  AND US.us_email LIKE '%Ñ%' OR ST.st_idnumber = 'Ñ'

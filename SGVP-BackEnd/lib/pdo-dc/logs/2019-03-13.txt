@@ -1,0 +1,11 @@
+Time : 21:48:18
+SQLSTATE[HY000]: General error: 1364 Field 'st_isfree' doesn't have a default value
+Raw SQL : INSERT INTO student_info(st_usersid,st_idnumber,st_career) VALUES ('18','0','1')
+
+Time : 21:45:09
+SQLSTATE[HY000]: General error: 1364 Field 'st_idnumber' doesn't have a default value
+Raw SQL : INSERT INTO student_info(st_usersid,st_career) VALUES ('17','3')
+
+Time : 21:43:45
+SQLSTATE[HY000]: General error: 1364 Field 'st_idnumber' doesn't have a default value
+Raw SQL : INSERT INTO student_info(st_usersid,st_career) VALUES ('16','3')
