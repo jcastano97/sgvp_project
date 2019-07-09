@@ -40,7 +40,7 @@ export class AppComponent {
       evaluacionPractica: string,
       informeFinalPractica: string,
       avanceMensual: string[],
-      seguimientoAvance: string[]
+      seguimientoAsesoria: string[]
     },
     dataCompany?: {
       name: string,
@@ -83,7 +83,7 @@ export class AppComponent {
       evaluacionPractica: '',
       informeFinalPractica: '',
       avanceMensual: [],
-      seguimientoAvance: []
+      seguimientoAsesoria: []
     },
     dataCompany: {
       name: '',

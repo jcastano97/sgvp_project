@@ -74,6 +74,13 @@ function db_LoginUser($data)
 			$additional_data["st_agreement_practice"] =  $query_res[0]['st_agreement_practice'];
 			$additional_data["st_acta_practice"] =  $query_res[0]['st_acta_practice'];
 			$additional_data["st_informefinal_practice"] =  $query_res[0]['st_informefinal_practice'];
+
+			$SQL2 = "SELECT stav_document FROM student_avance WHERE stav_student_id = '$us_id'";
+			$query_res2 = $db->query($SQL2);
+			$additional_data["avance_mensual"] = array_map("clean_stav_document", $query_res2);
+			$SQL2 = "SELECT stseas_document FROM student_seguimiento_asesoria WHERE stseas_student_id = '$us_id'";
+			$query_res2 = $db->query($SQL2);
+			$additional_data["seguimiento_asesoria"] = array_map("clean_stseas_document", $query_res2);
 		}
 		if($us_type == 2){ //Empresa
 			$SQL = "SELECT * FROM company_info WHERE comin_usersid = '$us_id'";
@@ -980,6 +987,7 @@ function db_SaveFile($data)
 	$us_id =  $data['us_id'];
 	$us_type = $data['us_type'];
 	$file_name = $data['file_name'];
+	$actual_link = '';
 
 	if($us_type == 1){ //Estudiante
 		$targetdir = '/uploads/student/';
@@ -994,16 +1002,19 @@ function db_SaveFile($data)
 				$count = $query_res[0]["COUNT(*)"];
 			}
 			$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$count-$file_name";
+			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$us_id-$us_type-$count-$file_name";
 		}
 		if ($file_name == 'seguimientoasesoria.pdf') {
 			$SQL = "SELECT COUNT(*) FROM student_seguimiento_asesoria WHERE stseas_student_id = $us_id";
 			$query_res = $db->query($SQL);
+			$count = 0;
 			if(empty($query_res) || $query_res[0]["COUNT(*)"] == 0) {
 				$count = 0;
 			} else {
 				$count = $query_res[0]["COUNT(*)"];
 			}
 			$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$count-$file_name";
+			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$us_id-$us_type-$count-$file_name";
 		}
 	}
 	if($us_type == 2){ // Empresa
@@ -1032,12 +1043,15 @@ function db_SaveFile($data)
 				$count = $query_res[0]["COUNT(*)"];
 			}
 			$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$student_id-$count-$file_name";
+			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$us_id-$us_type-$student_id-$count-$file_name";
 		}
 	}
 
 	if (move_uploaded_file($_FILES['file']['tmp_name'], $targetfile)) {
 		// file uploaded succeeded
-		$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$us_id-$us_type-$file_name";
+		if ($actual_link == '') {
+			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$us_id-$us_type-$file_name";
+		}
 
 		switch ($file_name) 
 		{
@@ -1209,7 +1223,13 @@ function sendMail($destinatario,$data,$data2)
 
 }
 
+function clean_stav_document($item) {
+	return $item['stav_document'];
+}
 
+function clean_stseas_document($item) {
+	return $item['stseas_document'];
+}
 
 
 

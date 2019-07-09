@@ -27,6 +27,52 @@
       <br>
     </mat-card-actions>
   </mat-card>
+  <div *ngIf="userInfo.type === 1" style="padding-top: 10px; padding-bottom: 10px;">
+    <mat-expansion-panel style="margin-bottom: 10px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{userInfo.dataStudent.avanceMensual.length}} documentos de avance mensual subidos.
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p *ngIf="userInfo.dataStudent.avanceMensual.length === 0">No hay elementos que mostrar</p>
+      <mat-card *ngFor="let item of userInfo.dataStudent.avanceMensual">
+        <a href="{{item}}" target="_blank">{{item}}</a>
+      </mat-card>
+      <mat-card>
+        <p>
+          Subir un nuevo documento de avance mesual / <a target="_self"  href="/assets/documents/formato-informe-mensual-v2.doc" download="formato-informe-mensual-v2.doc">
+          <i class="fa fa-download fa-2x text-primary" aria-hidden="true"></i> Descargar formato
+        </a>
+        </p>
+
+        <button type="button" mat-raised-button (click)="fileAMS.click()">Choose File</button>
+        <p id="fileAMS_p"></p>
+        <input style="visibility: hidden" (change)="onFileSelected('fileAMS', 'avancemensual.pdf')" #fileAMS type="file" id="fileAMS" accept="application/pdf">
+      </mat-card>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{userInfo.dataStudent.seguimientoAsesoria.length}} documentos de seguimiento y asesoría subidos.
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p *ngIf="userInfo.dataStudent.seguimientoAsesoria.length === 0">No hay elementos que mostrar</p>
+      <mat-card *ngFor="let item of userInfo.dataStudent.seguimientoAsesoria">
+        <a href="{{item}}" target="_blank">{{item}}</a>
+      </mat-card>
+      <mat-card>
+        <p>
+          Subir un nuevo documento de seguimiento y asesoría / <a target="_self"  href="/assets/documents/formato-reunion-asesoria2.doc" download="formato-reunion-asesoria2.doc">
+          <i class="fa fa-download fa-2x text-primary" aria-hidden="true"></i> Descargar formato
+        </a>
+        </p>
+
+        <button type="button" mat-raised-button (click)="fileSAP.click()">Choose File</button>
+        <p id="fileSAP_p"></p>
+        <input style="visibility: hidden" (change)="onFileSelected('fileSAP', 'seguimientoasesoria.pdf')" #fileSAP type="file" id="fileSAP" accept="application/pdf">
+      </mat-card>
+    </mat-expansion-panel>
+  </div>
   <mat-horizontal-stepper [linear]="isLinear" *ngIf="userType == 1">
     <mat-step [stepControl]="basicInfoFormGroup">
       <form [formGroup]="basicInfoFormGroup">
@@ -409,7 +455,7 @@
             <button type="button" mat-raised-button (click)="fileSEG.click()">Choose File</button>
             <a target="_blank" *ngIf="currentUview.seguimiento" href="{{currentUview.seguimiento}}" class="pl-2">{{currentUview.seguimiento}}</a>
             <p id="fileSEG_p"></p>
-            <input style="visibility: hidden" (change)="onFileSelected('fileSEG', 'seguimiento.doc', currentUview.us_id)" #fileSEG type="file" id="fileSEG" accept="application/pdf">
+            <input style="visibility: hidden" (change)="onFileSelected('fileSEG', 'seguimiento.pdf', currentUview.us_id)" #fileSEG type="file" id="fileSEG" accept="application/pdf">
           </div>
         </div>
       </div>

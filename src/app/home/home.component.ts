@@ -394,6 +394,14 @@ export class HomeComponent extends AppComponent implements OnInit {
           if (nameToSave === 'seguimiento.pdf') {
             location.reload();
           }
+          if (nameToSave === 'avancemensual.pdf') {
+            this.userInfo.dataStudent.avanceMensual.push(response.url);
+            localStorage.setItem('user', JSON.stringify(this.userInfo));
+          }
+          if (nameToSave === 'seguimientoasesoria.pdf') {
+            this.userInfo.dataStudent.seguimientoAsesoria.push(response.url);
+            localStorage.setItem('user', JSON.stringify(this.userInfo));
+          }
           this.dialog.open(DialogsComponent, {
             width: '350px',
             height: 'auto',
