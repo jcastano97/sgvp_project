@@ -1,27 +1,54 @@
-# SGVP
+# Project SGVP
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.1.
+## Specifications
 
-## Development server
+The project run in angular + php server to back services.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Versions
+* nodejs => 10.16.0
+* npm => 6.9.0
+* (angular cli) ng => 8.0.6
+* php => 7.x
+* MySQL => 5.x
 
-## Code scaffolding
+# For run the project
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## First you need install the prerequisites
+**Node JS**
+See [https://nodejs.org/es/](https://nodejs.org/es/)
 
-## Build
+**Angular CLI**
+After installing NodeJS run in the command line the next command: `npm install -g @angular/cli@8.0.6`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+**Wamp Server or others**
+See [http://www.wampserver.com/en/#download-wrapper](http://www.wampserver.com/en/#download-wrapper)
 
-## Running unit tests
+## Second run the php server
+*	Copy the folder `SGVP-BackEnd` in the php server folder, like this `C:\wamp64\www\SGVP-BackEnd`
+*	Create in the phpmyadmin the db named `sgvp`
+*	Create a user with the next params
+	*	user: `sgvp_user`
+	*	password: `root`
+*	Import in the db the next file sql `sgvp_project\SGVP-BackEnd\sgvp.sql`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Third run the angular project
+In the folder root of the project run `npm install`
+later..
+run `npm start`
 
-## Running end-to-end tests
+### Test users:
+**Admin**
+user: `admin@email.com`
+password: `123456`
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+**Student**
+user: `estudiante@email.com`
+password: `123456`
 
-## Further help
+**Enterprise**
+user: `empresa@email.com`
+password: `123456`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+**Teacher**
+user: `docente@email.com`
+password: `123456`
