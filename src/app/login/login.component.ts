@@ -105,6 +105,9 @@ export class LoginComponent extends AppComponent implements OnInit {
           this.userInfo.dataStudent.schedule = response.additional_data.st_schedule ? response.additional_data.st_schedule : '';
           this.userInfo.dataStudent.enrollment = response.additional_data.st_enrollment ? response.additional_data.st_enrollment : '';
           this.userInfo.dataStudent.practice = response.additional_data.st_practice ? response.additional_data.st_practice : '';
+          this.userInfo.dataStudent.convenioPractica = response.additional_data.st_agreement_practice ? response.additional_data.st_agreement_practice : '';
+          this.userInfo.dataStudent.actaPractica = response.additional_data.st_acta_practice ? response.additional_data.st_acta_practice : '';
+          this.userInfo.dataStudent.informeFinalPractica = response.additional_data.st_informefinal_practice ? response.additional_data.st_informefinal_practice : '';
         }
         if (this.userInfo.type === 2) {
           this.userInfo.dataCompany.name = response.additional_data.comin_name ? response.additional_data.comin_name : '';

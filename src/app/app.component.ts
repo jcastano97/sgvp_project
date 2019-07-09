@@ -33,7 +33,14 @@ export class AppComponent {
       cardid: string,
       eps: string,
       enrollment: string,
-      practice: string
+      practice: string,
+      convenioPractica: string,
+      actaPractica: string,
+      cumplimientoPractica: string,
+      evaluacionPractica: string,
+      informeFinalPractica: string,
+      avanceMensual: string[],
+      seguimientoAvance: string[]
     },
     dataCompany?: {
       name: string,
@@ -69,7 +76,14 @@ export class AppComponent {
       cardid: '',
       eps: '',
       enrollment: '',
-      practice: ''
+      practice: '',
+      convenioPractica: '',
+      actaPractica: '',
+      cumplimientoPractica: '',
+      evaluacionPractica: '',
+      informeFinalPractica: '',
+      avanceMensual: [],
+      seguimientoAvance: []
     },
     dataCompany: {
       name: '',

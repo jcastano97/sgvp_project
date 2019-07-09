@@ -355,7 +355,7 @@ export class HomeComponent extends AppComponent implements OnInit {
             this.userInfo.dataStudent.enrollment = response.url;
             localStorage.setItem('user', JSON.stringify(this.userInfo));
           }
-          if (nameToSave === 'practice.doc') {
+          if (nameToSave === 'practice.pdf') {
             this.userInfo.dataStudent.practice = response.url;
             localStorage.setItem('user', JSON.stringify(this.userInfo));
           }
@@ -379,7 +379,19 @@ export class HomeComponent extends AppComponent implements OnInit {
             this.userInfo.dataCompany.resolution = response.url;
             localStorage.setItem('user', JSON.stringify(this.userInfo));
           }
-          if (nameToSave === 'seguimiento.doc') {
+          if (nameToSave === 'conveniopractica.pdf') {
+            this.userInfo.dataStudent.convenioPractica = response.url;
+            localStorage.setItem('user', JSON.stringify(this.userInfo));
+          }
+          if (nameToSave === 'actapractica.pdf') {
+            this.userInfo.dataStudent.actaPractica = response.url;
+            localStorage.setItem('user', JSON.stringify(this.userInfo));
+          }
+          if (nameToSave === 'informefinalpractica.pdf') {
+            this.userInfo.dataStudent.informeFinalPractica = response.url;
+            localStorage.setItem('user', JSON.stringify(this.userInfo));
+          }
+          if (nameToSave === 'seguimiento.pdf') {
             location.reload();
           }
           this.dialog.open(DialogsComponent, {

@@ -135,7 +135,43 @@
           <button type="button" mat-raised-button (click)="fileRP.click()">Choose File</button>
           <a target="_blank" *ngIf="this.userInfo.dataStudent.practice" href="{{this.userInfo.dataStudent.practice}}" class="pl-2">{{this.userInfo.dataStudent.practice}}</a>
           <p id="fileRP_p"></p>
-          <input style="visibility: hidden" (change)="onFileSelected('fileRP', 'practice.doc')" #fileRP type="file" id="fileRP" accept="application/msword">
+          <input style="visibility: hidden" (change)="onFileSelected('fileRP', 'practice.pdf')" #fileRP type="file" id="fileRP" accept="application/pdf">
+        </div>
+
+        <div>
+          <p>
+            Convenio práctica empresarial / <a target="_self"  href="/assets/documents/convenio-practica-empresarial2.doc" download="convenio-practica-empresarial2.doc">
+            <i class="fa fa-download fa-2x text-primary" aria-hidden="true"></i> Descargar formato
+          </a>
+          </p>
+          <button type="button" mat-raised-button (click)="fileCP.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.convenioPractica" href="{{this.userInfo.dataStudent.convenioPractica}}" class="pl-2">{{this.userInfo.dataStudent.convenioPractica}}</a>
+          <p id="fileCP_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileCP', 'conveniopractica.pdf')" #fileCP type="file" id="fileCP" accept="application/pdf">
+        </div>
+
+        <div>
+          <p>
+            Acta de compromiso práctica / <a target="_self"  href="/assets/documents/formato-acta-compromisov2.doc" download="formato-acta-compromisov2.doc">
+            <i class="fa fa-download fa-2x text-primary" aria-hidden="true"></i> Descargar formato
+          </a>
+          </p>
+          <button type="button" mat-raised-button (click)="fileAC.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.actaPractica" href="{{this.userInfo.dataStudent.actaPractica}}" class="pl-2">{{this.userInfo.dataStudent.actaPractica}}</a>
+          <p id="fileAC_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileAC', 'actapractica.pdf')" #fileAC type="file" id="fileAC" accept="application/pdf">
+        </div>
+
+        <div>
+          <p>
+            Informe final de práctica empresarial / <a target="_self"  href="/assets/documents/formato-informe-final-v2.doc" download="formato-informe-final-v2.doc">
+            <i class="fa fa-download fa-2x text-primary" aria-hidden="true"></i> Descargar formato
+          </a>
+          </p>
+          <button type="button" mat-raised-button (click)="fileIFP.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.informeFinalPractica" href="{{this.userInfo.dataStudent.informeFinalPractica}}" class="pl-2">{{this.userInfo.dataStudent.informeFinalPractica}}</a>
+          <p id="fileIFP_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileIFP', 'informefinalpractica.pdf')" #fileIFP type="file" id="fileIFP" accept="application/pdf">
         </div>
 
         <div>
@@ -373,7 +409,7 @@
             <button type="button" mat-raised-button (click)="fileSEG.click()">Choose File</button>
             <a target="_blank" *ngIf="currentUview.seguimiento" href="{{currentUview.seguimiento}}" class="pl-2">{{currentUview.seguimiento}}</a>
             <p id="fileSEG_p"></p>
-            <input style="visibility: hidden" (change)="onFileSelected('fileSEG', 'seguimiento.doc', currentUview.us_id)" #fileSEG type="file" id="fileSEG" accept="application/msword">
+            <input style="visibility: hidden" (change)="onFileSelected('fileSEG', 'seguimiento.doc', currentUview.us_id)" #fileSEG type="file" id="fileSEG" accept="application/pdf">
           </div>
         </div>
       </div>

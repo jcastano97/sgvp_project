@@ -71,6 +71,9 @@ function db_LoginUser($data)
 			$additional_data["st_eps"] =  $query_res[0]['st_eps'];
 			$additional_data["st_enrollment"] =  $query_res[0]['st_enrollment'];
 			$additional_data["st_practice"] =  $query_res[0]['st_practice'];
+			$additional_data["st_agreement_practice"] =  $query_res[0]['st_agreement_practice'];
+			$additional_data["st_acta_practice"] =  $query_res[0]['st_acta_practice'];
+			$additional_data["st_informefinal_practice"] =  $query_res[0]['st_informefinal_practice'];
 		}
 		if($us_type == 2){ //Empresa
 			$SQL = "SELECT * FROM company_info WHERE comin_usersid = '$us_id'";
@@ -981,24 +984,55 @@ function db_SaveFile($data)
 	if($us_type == 1){ //Estudiante
 		$targetdir = '/uploads/student/';
 		$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$file_name";
+
+		if ($file_name == 'avancemensual.pdf') {
+			$SQL = "SELECT COUNT(*) FROM student_avance WHERE stav_student_id = $us_id";
+			$query_res = $db->query($SQL);
+			if(empty($query_res) || $query_res[0]["COUNT(*)"] == 0) {
+				$count = 0;
+			} else {
+				$count = $query_res[0]["COUNT(*)"];
+			}
+			$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$count-$file_name";
+		}
+		if ($file_name == 'seguimientoasesoria.pdf') {
+			$SQL = "SELECT COUNT(*) FROM student_seguimiento_asesoria WHERE stseas_student_id = $us_id";
+			$query_res = $db->query($SQL);
+			if(empty($query_res) || $query_res[0]["COUNT(*)"] == 0) {
+				$count = 0;
+			} else {
+				$count = $query_res[0]["COUNT(*)"];
+			}
+			$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$count-$file_name";
+		}
 	}
 	if($us_type == 2){ // Empresa
 		$targetdir = '/uploads/enterprise/';
 		$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$file_name";
+		if (isset($data['student_id'])) {
+			$targetdir = '/uploads/student/';
+			$student_id = $data['student_id'];
+			$targetfile = realpath(dirname(__FILE__))."$targetdir$student_id-1-$file_name";
+		}
 	}
 
 	if($us_type == 4){ // Docente
-		$targetdir = '/uploads/teacher/';
 		$student_id = $data['student_id'];
+		$targetdir = '/uploads/student/';
+		$student_id = $data['student_id'];
+		$targetfile = realpath(dirname(__FILE__))."$targetdir$student_id-1-$file_name";
 
-		$SQL = "SELECT COUNT(*) FROM teacher_student_tracing WHERE tst_teacher_id = $us_id AND tst_student_id = $student_id";
-		$query_res = $db->query($SQL);
-		if(empty($query_res) || $query_res[0]["COUNT(*)"] == 0) {
-			$count = 0;
-		} else {
-			$count = $query_res[0]["COUNT(*)"];
+		if ($file_name == 'seguimiento.pdf') {
+			$targetdir = '/uploads/teacher/';
+			$SQL = "SELECT COUNT(*) FROM teacher_student_tracing WHERE tst_teacher_id = $us_id AND tst_student_id = $student_id";
+			$query_res = $db->query($SQL);
+			if(empty($query_res) || $query_res[0]["COUNT(*)"] == 0) {
+				$count = 0;
+			} else {
+				$count = $query_res[0]["COUNT(*)"];
+			}
+			$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$student_id-$count-$file_name";
 		}
-		$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$student_id-$count-$file_name";
 	}
 
 	if (move_uploaded_file($_FILES['file']['tmp_name'], $targetfile)) {
@@ -1028,7 +1062,7 @@ function db_SaveFile($data)
 				$SQL3 = "UPDATE student_info SET st_enrollment = '$actual_link' WHERE  st_usersid = '$us_id'";
    				$query_res3 = $db->query($SQL3);
 			break;
-			case 'practice.doc':
+			case 'practice.pdf':
 				$SQL3 = "UPDATE student_info SET st_practice = '$actual_link' WHERE  st_usersid = '$us_id'";
    				$query_res3 = $db->query($SQL3);
 			break;
@@ -1052,8 +1086,40 @@ function db_SaveFile($data)
 				$SQL3 = "UPDATE company_info SET comin_resolution = '$actual_link' WHERE  comin_usersid = '$us_id'";
    				$query_res3 = $db->query($SQL3);
 			break;
-			case 'seguimiento.doc':
+			case 'seguimiento.pdf':
 				$SQL3 = "INSERT INTO teacher_student_tracing(tst_teacher_id, tst_student_id, tst_document) VALUES ('$us_id','$student_id', '$actual_link')";
+   				$query_res3 = $db->query($SQL3);
+			break;
+			case 'conveniopractica.pdf':
+				$SQL3 = "UPDATE student_info SET st_agreement_practice = '$actual_link' WHERE  st_usersid = '$us_id'";
+   				$query_res3 = $db->query($SQL3);
+			break;	
+			case 'actapractica.pdf':
+				$SQL3 = "UPDATE student_info SET st_acta_practice = '$actual_link' WHERE  st_usersid = '$us_id'";
+   				$query_res3 = $db->query($SQL3);
+			break;
+			case 'cumplimientopractica.pdf':
+				$SQL3 = "UPDATE student_info SET st_cumplimiento_practice = '$actual_link' WHERE  st_usersid = '$student_id'";
+   				$query_res3 = $db->query($SQL3);
+			break;
+			case 'evaluacionpractica.pdf':
+				$SQL3 = "UPDATE student_info SET st_evaluacion_practice = '$actual_link' WHERE  st_usersid = '$student_id'";
+   				$query_res3 = $db->query($SQL3);
+			break;
+			case 'informefinalpractica.pdf':
+				if($us_type == 1){ //Estudiante
+					$SQL3 = "UPDATE student_info SET st_informefinal_practice = '$actual_link' WHERE  st_usersid = '$us_id'";
+				} else {
+					$SQL3 = "UPDATE student_info SET st_informefinal_practice = '$actual_link' WHERE  st_usersid = '$student_id'";
+				}
+   				$query_res3 = $db->query($SQL3);
+			break;
+			case 'avancemensual.pdf':
+				$SQL3 = "INSERT INTO student_avance(stav_student_id, stav_document) VALUES ('$us_id', '$actual_link')";
+   				$query_res3 = $db->query($SQL3);
+			break;
+			case 'seguimientoasesoria.pdf':
+				$SQL3 = "INSERT INTO student_seguimiento_asesoria(stseas_student_id, stseas_document) VALUES ('$us_id', '$actual_link')";
    				$query_res3 = $db->query($SQL3);
 			break;
 		}
