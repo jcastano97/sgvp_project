@@ -387,6 +387,10 @@ export class HomeComponent extends AppComponent implements OnInit {
             this.userInfo.dataStudent.actaPractica = response.url;
             localStorage.setItem('user', JSON.stringify(this.userInfo));
           }
+          if (nameToSave === 'actacumplimiento.pdf') {
+            this.userInfo.dataStudent.actaCumplimiento = response.url;
+            localStorage.setItem('user', JSON.stringify(this.userInfo));
+          }
           if (nameToSave === 'informefinalpractica.pdf') {
             this.userInfo.dataStudent.informeFinalPractica = response.url;
             localStorage.setItem('user', JSON.stringify(this.userInfo));

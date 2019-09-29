@@ -210,6 +210,16 @@
 
         <div>
           <p>
+            Certificado acta de cumplimiento
+          </p>
+          <button type="button" mat-raised-button (click)="fileCAC.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataStudent.actaCumplimiento" href="{{this.userInfo.dataStudent.actaCumplimiento}}" class="pl-2">{{this.userInfo.dataStudent.actaCumplimiento}}</a>
+          <p id="fileCAC_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileCAC', 'actacumplimiento.pdf')" #fileCAC type="file" id="fileCAC" accept="application/pdf">
+        </div>
+
+        <div>
+          <p>
             Informe final de práctica empresarial / <a target="_self"  href="/assets/documents/formato-informe-final-v2.doc" download="formato-informe-final-v2.doc">
             <i class="fa fa-download fa-2x text-primary" aria-hidden="true"></i> Descargar formato
           </a>
@@ -464,6 +474,11 @@
             Acta de compromiso práctica: &nbsp;
             <a *ngIf="currentUview.st_acta_practice != null || currentUview.st_acta_practice != '' " href="{{currentUview.st_acta_practice}}"><b>{{currentUview.st_acta_practice}}</b></a>
             <b *ngIf="currentUview.st_acta_practice == null || currentUview.st_acta_practice == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Acta de cumplimiento: &nbsp;
+            <a *ngIf="currentUview.st_acta_cumplimiento != null || currentUview.st_acta_cumplimiento != '' " href="{{currentUview.st_acta_cumplimiento}}"><b>{{currentUview.st_acta_cumplimiento}}</b></a>
+            <b *ngIf="currentUview.st_acta_cumplimiento == null || currentUview.st_acta_cumplimiento == '' " style="font-weight: inherit;color:red;">Falta</b>
           </div>
           <div style="padding-top: 5px; padding-bottom: 5px">
             Informe final de práctica empresarial: &nbsp;
