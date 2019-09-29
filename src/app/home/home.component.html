@@ -519,7 +519,7 @@
             </mat-expansion-panel-header>
             <p *ngIf="currentUview.tracing.length === 0">No hay elementos que mostrar</p>
             <mat-card *ngFor="let item of currentUview.tracing">
-              <a href="{{item.tst_document}}">{{item.tst_document}}</a>
+              <a href="{{item.stseas_document}}">{{item.stseas_document}}</a>
             </mat-card>
           </mat-expansion-panel>
           <div>
@@ -530,7 +530,7 @@
             <button type="button" mat-raised-button (click)="fileSEG.click()">Choose File</button>
             <a target="_blank" *ngIf="currentUview.seguimiento" href="{{currentUview.seguimiento}}" class="pl-2">{{currentUview.seguimiento}}</a>
             <p id="fileSEG_p"></p>
-            <input style="visibility: hidden" (change)="onFileSelected('fileSEG', 'seguimiento.pdf', currentUview.us_id)" #fileSEG type="file" id="fileSEG" accept="application/pdf">
+            <input style="visibility: hidden" (change)="onFileSelected('fileSEG', 'seguimientoasesoria.pdf', currentUview.us_id)" #fileSEG type="file" id="fileSEG" accept="application/pdf">
           </div>
         </div>
       </div>
