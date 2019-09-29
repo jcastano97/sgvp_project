@@ -430,13 +430,71 @@
             <b *ngIf="currentUview.st_address != null || currentUview.st_address != '' ">{{currentUview.st_address}}</b>
             <b *ngIf="currentUview.st_address == null || currentUview.st_address == '' " style="font-weight: inherit;color:red;">Falta</b>
           </mat-list-item>
-          <mat-list-item>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Hoja de vida: &nbsp;
+            <a *ngIf="currentUview.st_hv != null || currentUview.st_hv != '' " href="{{currentUview.st_hv}}"><b>{{currentUview.st_hv}}</b></a>
+            <b *ngIf="currentUview.st_hv == null || currentUview.st_hv == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Cedula: &nbsp;
+            <a *ngIf="currentUview.st_cardid != null || currentUview.st_cardid != '' " href="{{currentUview.st_cardid}}"><b>{{currentUview.st_cardid}}</b></a>
+            <b *ngIf="currentUview.st_cardid == null || currentUview.st_cardid == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
             EPS: &nbsp;
-            <b *ngIf="currentUview.st_eps != null || currentUview.st_eps != '' ">{{currentUview.st_eps}}</b>
+            <a *ngIf="currentUview.st_eps != null || currentUview.st_eps != '' " href="{{currentUview.st_eps}}"><b>{{currentUview.st_eps}}</b></a>
             <b *ngIf="currentUview.st_eps == null || currentUview.st_eps == '' " style="font-weight: inherit;color:red;">Falta</b>
-          </mat-list-item>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Acta de matricula: &nbsp;
+            <a *ngIf="currentUview.st_enrollment != null || currentUview.st_enrollment != '' " href="{{currentUview.st_enrollment}}"><b>{{currentUview.st_enrollment}}</b></a>
+            <b *ngIf="currentUview.st_enrollment == null || currentUview.st_enrollment == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Registro de practica: &nbsp;
+            <a *ngIf="currentUview.st_practice != null || currentUview.st_practice != '' " href="{{currentUview.st_practice}}"><b>{{currentUview.st_practice}}</b></a>
+            <b *ngIf="currentUview.st_practice == null || currentUview.st_practice == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Convenio práctica empresarial: &nbsp;
+            <a *ngIf="currentUview.st_agreement_practice != null || currentUview.st_agreement_practice != '' " href="{{currentUview.st_agreement_practice}}"><b>{{currentUview.st_agreement_practice}}</b></a>
+            <b *ngIf="currentUview.st_agreement_practice == null || currentUview.st_agreement_practice == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Acta de compromiso práctica: &nbsp;
+            <a *ngIf="currentUview.st_acta_practice != null || currentUview.st_acta_practice != '' " href="{{currentUview.st_acta_practice}}"><b>{{currentUview.st_acta_practice}}</b></a>
+            <b *ngIf="currentUview.st_acta_practice == null || currentUview.st_acta_practice == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
+          <div style="padding-top: 5px; padding-bottom: 5px">
+            Informe final de práctica empresarial: &nbsp;
+            <a *ngIf="currentUview.st_informefinal_practice != null || currentUview.st_informefinal_practice != '' " href="{{currentUview.st_informefinal_practice}}"><b>{{currentUview.st_informefinal_practice}}</b></a>
+            <b *ngIf="currentUview.st_informefinal_practice == null || currentUview.st_informefinal_practice == '' " style="font-weight: inherit;color:red;">Falta</b>
+          </div>
           <mat-list-item>Ultimo inicio de sesión: &nbsp; <span *ngIf="currentUview.us_last_login != null">{{currentUview.us_last_login}}</span> <span *ngIf="currentUview.us_last_login == null">Nunca</span> </mat-list-item>
         </mat-list>
+        <div *ngIf="userInfo.type === 4">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{currentUview.advance.length}} documentos de avance mensual subidos.
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p *ngIf="currentUview.advance.length === 0">No hay elementos que mostrar</p>
+            <mat-card *ngFor="let item of currentUview.advance">
+              <a href="{{item.stav_document}}">{{item.stav_document}}</a>
+            </mat-card>
+          </mat-expansion-panel>
+          <div>
+            <p>
+              Subir un nuevo documento de avance mensual
+            </p>
+
+            <button type="button" mat-raised-button (click)="fileAVA.click()">Choose File</button>
+            <a target="_blank" *ngIf="currentUview.avance" href="{{currentUview.avance}}" class="pl-2">{{currentUview.avance}}</a>
+            <p id="fileAVA_p"></p>
+            <input style="visibility: hidden" (change)="onFileSelected('fileAVA', 'avancemensual.pdf', currentUview.us_id)" #fileAVA type="file" id="fileAVA" accept="application/pdf">
+          </div>
+        </div>
         <div *ngIf="userInfo.type === 4">
           <mat-expansion-panel>
             <mat-expansion-panel-header>

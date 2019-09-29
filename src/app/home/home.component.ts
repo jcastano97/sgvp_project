@@ -395,8 +395,12 @@ export class HomeComponent extends AppComponent implements OnInit {
             location.reload();
           }
           if (nameToSave === 'avancemensual.pdf') {
-            this.userInfo.dataStudent.avanceMensual.push(response.url);
-            localStorage.setItem('user', JSON.stringify(this.userInfo));
+            if (this.userInfo.type == 4) {
+              this.currentUview.advance.push({stav_document: response.url});
+            } else {
+              this.userInfo.dataStudent.avanceMensual.push(response.url);
+              localStorage.setItem('user', JSON.stringify(this.userInfo));
+            }
           }
           if (nameToSave === 'seguimientoasesoria.pdf') {
             this.userInfo.dataStudent.seguimientoAsesoria.push(response.url);
