@@ -282,9 +282,9 @@
       <form [formGroup]="documentsFormGroupCompany">
         <ng-template matStepLabel>Documentos</ng-template>
 
-        <div *ngIf="this.userInfo.dataCompany.razon === 'publica'">
+        <div *ngIf="this.userInfo.dataCompany.razon === 'publica' || this.userInfo.dataCompany.razon === 'privada'">
           <p>
-            Cámara de comercio formato pdf
+            Certificado de cámara de comercio formato pdf
           </p>
 
           <button type="button" mat-raised-button (click)="fileCC.click()">Choose File</button>
@@ -293,7 +293,7 @@
           <input style="visibility: hidden" (change)="onFileSelected('fileCC', 'commerce.pdf')" #fileCC type="file" id="fileCC" accept="application/pdf">
         </div>
 
-        <div *ngIf="this.userInfo.dataCompany.razon === 'publica'">
+        <div *ngIf="this.userInfo.dataCompany.razon === 'publica' || this.userInfo.dataCompany.razon === 'privada'">
           <p>RUT formato pdf</p>
           <button type="button" mat-raised-button (click)="fileRUT.click()">Choose File</button>
           <a target="_blank" *ngIf="this.userInfo.dataCompany.rut" href="{{this.userInfo.dataCompany.rut}}" class="pl-2">{{this.userInfo.dataCompany.rut}}</a>
@@ -309,7 +309,7 @@
           <input style="visibility: hidden" (change)="onFileSelected('fileC', 'cardid.pdf')" #fileC type="file" id="fileC" accept="application/pdf">
         </div>
 
-        <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
+        <div *ngIf="this.userInfo.dataCompany.razon === 'publica'">
           <p>Acta de posesión (representante legal) formato pdf</p>
           <button type="button" mat-raised-button (click)="filePOS.click()">Choose File</button>
           <a target="_blank" *ngIf="this.userInfo.dataCompany.possesion" href="{{this.userInfo.dataCompany.possesion}}" class="pl-2">{{this.userInfo.dataCompany.possesion}}</a>
@@ -317,14 +317,7 @@
           <input style="visibility: hidden" (change)="onFileSelected('filePOS', 'possesion.pdf')" #filePOS type="file" id="filePOS" accept="application/pdf">
         </div>
 
-        <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
-          <p>Convenio marco (si existe) formato pdf</p>
-          <button type="button" mat-raised-button (click)="fileCM.click()">Choose File</button>
-          <a target="_blank" *ngIf="this.userInfo.dataCompany.agreement" href="{{this.userInfo.dataCompany.agreement}}" class="pl-2">{{this.userInfo.dataCompany.agreement}}</a>
-          <p id="fileCM_p"></p>
-          <input style="visibility: hidden" (change)="onFileSelected('fileCM', 'conveniomarco.pdf')" #fileCM type="file" id="fileCM" accept="application/pdf">
-        </div>
-
+        <!--
         <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
           <p>Decreto o resolución de la dependencia formato pdf</p>
           <button type="button" mat-raised-button (click)="fileDD.click()">Choose File</button>
@@ -332,6 +325,15 @@
           <p id="fileDD_p"></p>
           <input style="visibility: hidden" (change)="onFileSelected('fileDD', 'decretodep.pdf')" #fileDD type="file" id="fileDD" accept="application/pdf">
         </div>
+
+        <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
+          <p>Convenio de marco</p>
+          <button type="button" mat-raised-button (click)="fileCM.click()">Choose File</button>
+          <a target="_blank" *ngIf="this.userInfo.dataCompany.agreement" href="{{this.userInfo.dataCompany.agreement}}" class="pl-2">{{this.userInfo.dataCompany.agreement}}</a>
+          <p id="fileCM_p"></p>
+          <input style="visibility: hidden" (change)="onFileSelected('fileCM', 'conveniomarco.pdf')" #fileCM type="file" id="fileCM" accept="application/pdf">
+        </div>
+        -->
 
         <div>
           <button mat-button matStepperPrevious>Anterior</button>

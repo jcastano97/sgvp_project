@@ -199,9 +199,8 @@ export class LoginComponent extends AppComponent implements OnInit {
             emailnew: result.emailnew,
             passnew: result.passnew
           };
-          this.service.get(data).subscribe(res => {
-            console.log(res);
-            const response: any = {};
+          this.service.get(data).subscribe(response => {
+            console.log(response);
             if (response.data === 'exist') {
               this.dialog.open(DialogsComponent, {
                 width: '350px',
@@ -212,15 +211,8 @@ export class LoginComponent extends AppComponent implements OnInit {
                 }
               });
             } else {
-              localStorage.setItem('us_token', response.data.us_token);
-              localStorage.setItem('us_email', response.additional_data.us_email);
-              localStorage.setItem('us_id', response.additional_data.us_id);
-              localStorage.setItem('us_type', response.additional_data.us_type);
-              localStorage.setItem('us_img', response.additional_data.us_img);
-              this.router.navigate(['/inicio']);
-              this.snackBar.open('Bienvenid@ a SGVP', 'Cerrar', {
-                duration: 4000
-              });
+              console.log(response);
+              this.login(result.emailnew, result.passnew);
             }
           });
         }

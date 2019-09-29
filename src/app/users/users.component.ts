@@ -43,7 +43,6 @@ export class UsersComponent extends AppComponent implements OnInit {
   private currentCview: any = null;
   private currentOtherUserview: any = null;
 
-  data: AOA;
   dataUsers: any;
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName = 'SheetJS.xlsx';
@@ -232,8 +231,8 @@ export class UsersComponent extends AppComponent implements OnInit {
       /* save data */
       const data = XLSX.utils.sheet_to_json(ws, {header: 1});
       const validate = this.validateUsers('1', data);
-      this.data = (data) as AOA;
-      if (validate.state === 'ok') {
+      if (validate.state == 'ok') {
+        console.log(validate.data);
         this.dataUsers = validate.data;
       } else {
         console.log(validate);
@@ -243,6 +242,7 @@ export class UsersComponent extends AppComponent implements OnInit {
   }
 
   validateUsers(type: '1', data: any) {
+    console.log(data);
     let response: any = { state: 'ok' };
     const colums = data[0];
     data.splice(0, 1);
@@ -258,41 +258,54 @@ export class UsersComponent extends AppComponent implements OnInit {
     if (colums[3] !== 'correo') {
       response = { state: 'error', message: 'El formato del excel no coincide, la columna 4 fila 1 debe contener el correo' };
     }
+    if (colums[4] !== 'cedula') {
+      response = { state: 'error', message: 'El formato del excel no coincide, la columna 5 fila 1 debe contener el correo' };
+    }
     if (response.state === 'ok') {
       response.data = [];
       for (const x in data) {
-        console.log(data[x]);
+        console.log(data[x][4]);
+        let errorMessage = '';
         const user: any = {};
-        if (data[x][0] && data[x][0] !== '') {
+        if (data[x][0] && data[x][0] != '') {
           user.names = data[x][0];
         } else {
-          response = { state: 'error', message: 'El formato del excel no coincide, la columna 1 fila ' + x +
-              ' debe contener un nombre valido del usuario' };
-          break;
+          errorMessage = 'El formato del excel no coincide, la columna 1 fila ' + x +
+              ' debe contener un nombre valido del usuario';
         }
-        if (data[x][1] && data[x][1] !== '') {
+        if (data[x][1] && data[x][1] != '') {
           user.lastnames = data[x][1];
         } else {
-          response = { state: 'error', message: 'El formato del excel no coincide, la columna 2 fila ' + x +
-              ' debe contener un apellido valido del usuario' };
-          break;
+          errorMessage = 'El formato del excel no coincide, la columna 2 fila ' + x +
+              ' debe contener un apellido valido del usuario';
         }
-        if (data[x][2] && data[x][2] !== '') {
+        if (data[x][2] && data[x][2] != '') {
           user.career = data[x][2];
         } else {
-          response = { state: 'error', message: 'El formato del excel no coincide, la columna 3 fila ' + x +
-              ' debe contener una carrera valida del usuario' };
-          break;
+          errorMessage = 'El formato del excel no coincide, la columna 3 fila ' + x +
+              ' debe contener una carrera valida del usuario';
         }
-        if (data[x][3] && data[x][3] !== '') {
+        if (data[x][3] && data[x][3] != '') {
           user.email = data[x][3];
         } else {
-          response = { state: 'error', message: 'El formato del excel no coincide, la columna 4 fila ' + x +
-              ' debe contener un correo valido del usuario' };
-          break;
+          errorMessage = 'El formato del excel no coincide, la columna 4 fila ' + x +
+              ' debe contener un correo valido del usuario';
         }
-        user.password = 'e10adc3949ba59abbe56e057f20f883e';
-        response.data.push(user);
+        if (data[x][4] && data[x][4] != '') {
+          console.log("id number");
+          user.idNumber = data[x][4];
+        } else {
+          console.log("no id number");
+          errorMessage = 'El formato del excel no coincide, la columna 5 fila ' + x +
+              ' debe contener un número de cedula';
+        }
+        if (!user.names && !user.lastnames && !user.career && !user.email && !user.idNumber) {
+          // campo vacio
+        } else {
+          user.errorMessage = errorMessage;
+          user.password = 'e10adc3949ba59abbe56e057f20f883e';
+          response.data.push(user);
+        }
       }
     }
     return response;
@@ -300,22 +313,35 @@ export class UsersComponent extends AppComponent implements OnInit {
 
   saveUsers() {
     console.log('saveUsers');
-    console.log(this.dataUsers);
-    const data = {
-      function: 'NewUsers',
-      param: '{ "data": ' + JSON.stringify(this.dataUsers) + '}',
-      us_id: this.userInfo.id,
-      token: localStorage.getItem('us_token'),
-      us_type: this.userInfo.type
-    };
-    this.service.set(data).subscribe(response => {
-      console.log('ok');
-      console.log(response);
+    const validUsers = [];
+    for (let i = 0; i < this.dataUsers.length; i++) {
+      if (!this.dataUsers[i].errorMessage) {
+        validUsers.push(this.dataUsers[i]);
+      }
+    }
+    if (validUsers.length != 0) {
+      const data = {
+        function: 'NewUsers',
+        param: '{ "data": ' + JSON.stringify(validUsers) + '}',
+        us_id: this.userInfo.id,
+        token: localStorage.getItem('us_token'),
+        us_type: this.userInfo.type
+      };
+      this.service.set(data).subscribe(response => {
+        console.log('ok');
+        console.log(response);
+        this.dialog.open(DialogsComponent, {
+          width: '350px',
+          height: 'auto',
+          data: { typeDialog: 'alert', title: 'Los usuarios han sido creados', msg: response.data}
+        });
+      });
+    } else {
       this.dialog.open(DialogsComponent, {
         width: '350px',
         height: 'auto',
-        data: { typeDialog: 'alert', title: 'Los usuarios han sido creados', msg: response.data}
+        data: { typeDialog: 'alert', title: 'No hay usuarios validos', msg: ''}
       });
-    });
+    }
   }
 }

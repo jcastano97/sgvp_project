@@ -18,16 +18,33 @@
       <p id="fileExcel_p"></p>
       <input #fileExcel id="fileExcel" style="visibility: hidden" type="file" (change)="onFileChange($event)" multiple="false" />
       <br>
-      <table class="sjs-table" *ngIf="data">
+      <table class="sjs-table" *ngIf="dataUsers">
         <tr>
           <th>Nombres</th>
           <th>Apellidos</th>
           <th>Carrera</th>
           <th>Correo</th>
+          <th>Cedula</th>
+          <th>Error</th>
         </tr>
-        <tr *ngFor="let row of data">
-          <td *ngFor="let val of row">
-            {{val}}
+        <tr *ngFor="let user of dataUsers">
+          <td>
+            {{user.names}}
+          </td>
+          <td>
+            {{user.lastnames}}
+          </td>
+          <td>
+            {{user.career}}
+          </td>
+          <td>
+            {{user.email}}
+          </td>
+          <td>
+            {{user.idNumber}}
+          </td>
+          <td>
+            {{user.errorMessage}}
           </td>
         </tr>
       </table>
