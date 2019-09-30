@@ -32,27 +32,41 @@ export class HttpService {
     return this.http.put(`${this.ServerUrl}`, additionalData, this.options);
   }
 
-  public sendData(userInfo: any, formData: FormData, nameToSave: string, studentId?): Observable<any> {
-    let httpOptions = new HttpHeaders({
+  public sendData(userInfo: any, formData: FormData, nameToSave: string, studentId?, userData?: any): Observable<any> {
+    let httpOptions = new HttpHeaders();
+    if (userInfo.type == 3) {
+      httpOptions = new HttpHeaders({
         additional: JSON.stringify({
           function: 'SaveFile',
-          us_id: userInfo.id,
+          us_id: userData.id,
+          student_id: studentId,
           token: localStorage.getItem('us_token'),
-          us_type: userInfo.type,
+          us_type: userData.type,
           file_name: nameToSave
         })
       });
-    if (userInfo.type === 4) {
+    } else {
       httpOptions = new HttpHeaders({
         additional: JSON.stringify({
           function: 'SaveFile',
           us_id: userInfo.id,
-          student_id: studentId,
           token: localStorage.getItem('us_token'),
           us_type: userInfo.type,
           file_name: nameToSave
         })
       });
+      if (userInfo.type === 4) {
+        httpOptions = new HttpHeaders({
+          additional: JSON.stringify({
+            function: 'SaveFile',
+            us_id: userInfo.id,
+            student_id: studentId,
+            token: localStorage.getItem('us_token'),
+            us_type: userInfo.type,
+            file_name: nameToSave
+          })
+        });
+      }
     }
     return this.http.post('http://localhost:80/SGVP-BackEnd/handler.php', formData, { headers: httpOptions });
   }

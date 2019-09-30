@@ -42,6 +42,9 @@ export class UsersComponent extends AppComponent implements OnInit {
   private currentUview: any = null;
   private currentCview: any = null;
   private currentOtherUserview: any = null;
+  private editUser = false;
+  private editUserData: any;
+  private usersDocente: any = [];
 
   dataUsers: any;
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
@@ -75,6 +78,7 @@ export class UsersComponent extends AppComponent implements OnInit {
     this.currentUview = { us_img: null };
     this.currentCview = { us_img: null };
     this.currentOtherUserview = { us_img: null };
+    this.getUsersDocente();
   }
 
   public createUser(typeUserDefault) {
@@ -168,6 +172,7 @@ export class UsersComponent extends AppComponent implements OnInit {
 
 
   public viewUser(data) {
+    this.editUser = false;
     if (data.us_type === 1) {
       this.currentUview = data;
       document.getElementById('view-u').style.width = '420px';
@@ -343,5 +348,178 @@ export class UsersComponent extends AppComponent implements OnInit {
         data: { typeDialog: 'alert', title: 'No hay usuarios validos', msg: ''}
       });
     }
+  }
+
+  public onFileSelected(nameFile: string, nameToSave: string, studentId?: number) {
+    const inputNode: any = document.querySelector('#' + nameFile);
+    document.querySelector('#' + nameFile + '_p').textContent = inputNode.files[0].name;
+    console.log(inputNode.files);
+    const fileList: FileList = inputNode.files;
+    if (fileList.length > 0) {
+      const fileToUpload = fileList.item(0);
+      const formData: FormData = new FormData();
+      formData.append('file', fileToUpload, fileToUpload.name);
+      console.log(formData.getAll('file'));
+      this.service.sendData(this.userInfo, formData, nameToSave, studentId, {id: this.currentUview.us_id, type: this.currentUview.us_type}).subscribe(response => {
+        console.log('subscribe');
+        console.log(response);
+        if (response.data === 'ok') {
+          if (nameToSave === 'hv.pdf') {
+            this.currentUview.st_hv = response.url;
+          }
+          if (nameToSave === 'cardid.pdf') {
+            if (this.currentUview.us_type == 1) {
+              this.currentUview.st_cardid = response.url;
+            } else if (this.currentUview.us_type == 2) {
+              this.currentUview.comin_cardid = response.url;
+            }
+          }
+          if (nameToSave === 'eps.pdf') {
+            this.currentUview.st_eps = response.url;
+          }
+          if (nameToSave === 'enrollment.pdf') {
+            this.currentUview.st_enrollment = response.url;
+          }
+          if (nameToSave === 'practice.pdf') {
+            this.currentUview.st_practice = response.url;
+          }
+          if (nameToSave === 'commerce.pdf') {
+            this.userInfo.dataCompany.commerce = response.url;
+          }
+          if (nameToSave === 'rut.pdf') {
+            this.userInfo.dataCompany.rut = response.url;
+          }
+          if (nameToSave === 'possesion.pdf') {
+            this.userInfo.dataCompany.possesion = response.url;
+          }
+          if (nameToSave === 'conveniomarco.pdf') {
+            this.userInfo.dataCompany.agreement = response.url;
+          }
+          if (nameToSave === 'decretodep.pdf') {
+            this.userInfo.dataCompany.resolution = response.url;
+          }
+          if (nameToSave === 'conveniopractica.pdf') {
+            this.currentUview.st_agreement_practice = response.url;
+          }
+          if (nameToSave === 'actapractica.pdf') {
+            this.currentUview.st_acta_practice = response.url;
+          }
+          if (nameToSave === 'actacumplimiento.pdf') {
+            this.currentUview.st_acta_cumplimiento = response.url;
+          }
+          if (nameToSave === 'informefinalpractica.pdf') {
+            this.currentUview.st_informefinal_practice = response.url;
+          }
+          if (nameToSave === 'avancemensual.pdf') {
+            this.currentUview.advance.push({stav_document: response.url});
+          }
+          if (nameToSave === 'seguimientoasesoria.pdf') {
+            this.currentUview.tracing.push({stseas_document: response.url});
+          }
+          if (nameToSave === 'pazysalvo.pdf') {
+            this.currentUview.st_paz_salvo = response.url;
+          }
+          this.dialog.open(DialogsComponent, {
+            width: '350px',
+            height: 'auto',
+            data: { typeDialog: 'alert', title: 'Proceso', msg: 'Información actualizada'}
+          });
+        } else {
+          this.dialog.open(DialogsComponent, {
+            width: '350px',
+            height: 'auto',
+            data: {
+              typeDialog: 'alert',
+              title: 'Espera...', msg: 'No fue posible actualizar el documento, por favor vuelva a intentarlo.'
+            }
+          });
+        }
+      });
+    }
+  }
+
+  public toogleEditUser() {
+    console.log(this.currentUview);
+    console.log(this.editUserData);
+    this.editUserData = this.currentUview;
+    this.editUser = !this.editUser;
+  }
+
+  public saveEditUser() {
+    console.log(this.editUserData);
+    this.editUser = false;
+    console.log('UpdateUser');
+    let data;
+    if (this.editUserData.us_type === 1) {
+      data = {
+        function: 'UpdateUser',
+        us_id: this.editUserData.us_id,
+        token: localStorage.getItem('us_token'),
+        us_type: this.editUserData.us_type,
+        us_email: this.editUserData.us_email,
+        us_names: this.editUserData.us_names,
+        us_lastnames: this.editUserData.us_lastnames,
+        st_idnumber: this.editUserData.st_idnumber,
+        st_career: this.editUserData.st_career,
+        st_isfree: this.editUserData.st_isfree,
+        st_teacherassc: this.editUserData.st_teacherassc,
+        st_celphone: this.editUserData.st_celphone,
+        st_phone: this.editUserData.st_phone,
+        st_address: this.editUserData.st_address,
+        st_schedule: this.editUserData.st_schedule
+      };
+    }
+
+    if (this.editUserData.us_type === 2) {
+      data = {
+        function: 'UpdateUser',
+        us_id: this.userInfo.id,
+        token: localStorage.getItem('us_token'),
+        us_type: this.userInfo.type,
+        us_email: this.userInfo.email,
+        us_names: this.userInfo.names,
+        us_lastnames: this.userInfo.lastNames,
+        comin_name: this.userInfo.dataCompany.name,
+        comin_razon: this.userInfo.dataCompany.razon,
+        comin_nit: this.userInfo.dataCompany.nit,
+        comin_address: this.userInfo.dataCompany.address,
+        comin_phone: this.userInfo.dataCompany.phone
+      };
+    }
+
+    //console.log(data);
+    this.service.update(data).subscribe(response => {
+      console.log('subscribe');
+      console.log(response);
+      if (response.data === 'ok') {
+        localStorage.setItem('user', JSON.stringify(this.userInfo));
+        this.dialog.open(DialogsComponent, {
+          width: '350px',
+          height: 'auto',
+          data: { typeDialog: 'alert', title: 'Completado', msg: 'Información actualizada'}
+        });
+      } else {
+        this.dialog.open(DialogsComponent, {
+          width: '350px',
+          height: 'auto',
+          data: { typeDialog: 'alert', title: 'Espera...', msg: 'No se pudo actualizar la información.'}
+        });
+      }
+    });
+  }
+
+  public getUsersDocente() {
+    const data = {
+      function: 'GetUsers',
+      limit: 1000,
+      offset: 0,
+      param: '{"rol": "4"}',
+      us_id: this.userInfo.id,
+      token: localStorage.getItem('us_token'),
+      us_type: this.userInfo.type
+    };
+    this.service.get(data).subscribe(response => {
+      this.usersDocente = response.data;
+    });
   }
 }
