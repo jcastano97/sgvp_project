@@ -414,6 +414,9 @@ export class HomeComponent extends AppComponent implements OnInit {
               localStorage.setItem('user', JSON.stringify(this.userInfo));
             }
           }
+          if (nameToSave === 'pazysalvo.pdf') {
+            this.currentUview.st_paz_salvo = response.url;
+          }
           this.dialog.open(DialogsComponent, {
             width: '350px',
             height: 'auto',
