@@ -173,7 +173,10 @@ export class UsersComponent extends AppComponent implements OnInit {
 
   public viewUser(data) {
     this.editUser = false;
-    if (data.us_type === 1) {
+    this.currentUview = data;
+    document.getElementById('view-u').style.width = '420px';
+    document.getElementById('view-u').style.padding = '20px';
+    /*if (data.us_type == 1) {
       this.currentUview = data;
       document.getElementById('view-u').style.width = '420px';
       document.getElementById('view-u').style.padding = '20px';
@@ -185,7 +188,7 @@ export class UsersComponent extends AppComponent implements OnInit {
       this.currentOtherUserview = data;
       document.getElementById('view-other').style.width = '420px';
       document.getElementById('view-other').style.padding = '20px';
-    }
+    }*/
     console.log(data);
   }
 
@@ -193,7 +196,7 @@ export class UsersComponent extends AppComponent implements OnInit {
     document.getElementById('view-u').style.width = '0px';
     document.getElementById('view-u').style.padding = '0px';
   }
-
+  /*
   public closeviewCompany() {
     document.getElementById('view-c').style.width = '0px';
     document.getElementById('view-c').style.padding = '0px';
@@ -203,6 +206,7 @@ export class UsersComponent extends AppComponent implements OnInit {
     document.getElementById('view-other').style.width = '0px';
     document.getElementById('view-other').style.padding = '0px';
   }
+  */
 
   public getPrograms() {
 
@@ -384,19 +388,19 @@ export class UsersComponent extends AppComponent implements OnInit {
             this.currentUview.st_practice = response.url;
           }
           if (nameToSave === 'commerce.pdf') {
-            this.userInfo.dataCompany.commerce = response.url;
+            this.currentUview.comin_commerce = response.url;
           }
           if (nameToSave === 'rut.pdf') {
-            this.userInfo.dataCompany.rut = response.url;
+            this.currentUview.comin_rut = response.url;
           }
           if (nameToSave === 'possesion.pdf') {
-            this.userInfo.dataCompany.possesion = response.url;
+            this.currentUview.comin_possesion = response.url;
           }
           if (nameToSave === 'conveniomarco.pdf') {
-            this.userInfo.dataCompany.agreement = response.url;
+            this.currentUview.comin_agreement = response.url;
           }
           if (nameToSave === 'decretodep.pdf') {
-            this.userInfo.dataCompany.resolution = response.url;
+            this.currentUview.comin_resolution = response.url;
           }
           if (nameToSave === 'conveniopractica.pdf') {
             this.currentUview.st_agreement_practice = response.url;
@@ -459,6 +463,7 @@ export class UsersComponent extends AppComponent implements OnInit {
         us_email: this.editUserData.us_email,
         us_names: this.editUserData.us_names,
         us_lastnames: this.editUserData.us_lastnames,
+        us_state: this.editUserData.us_state,
         st_idnumber: this.editUserData.st_idnumber,
         st_career: this.editUserData.st_career,
         st_isfree: this.editUserData.st_isfree,
@@ -470,20 +475,34 @@ export class UsersComponent extends AppComponent implements OnInit {
       };
     }
 
-    if (this.editUserData.us_type === 2) {
+    if (this.editUserData.us_type == 2) {
       data = {
         function: 'UpdateUser',
-        us_id: this.userInfo.id,
+        us_id: this.editUserData.us_id,
         token: localStorage.getItem('us_token'),
-        us_type: this.userInfo.type,
-        us_email: this.userInfo.email,
-        us_names: this.userInfo.names,
-        us_lastnames: this.userInfo.lastNames,
-        comin_name: this.userInfo.dataCompany.name,
-        comin_razon: this.userInfo.dataCompany.razon,
-        comin_nit: this.userInfo.dataCompany.nit,
-        comin_address: this.userInfo.dataCompany.address,
-        comin_phone: this.userInfo.dataCompany.phone
+        us_type: this.editUserData.us_type,
+        us_email: this.editUserData.us_email,
+        us_names: this.editUserData.us_names,
+        us_lastnames: this.editUserData.us_lastnames,
+        us_state: this.editUserData.us_state,
+        comin_name: this.editUserData.comin_name,
+        comin_phone: this.editUserData.comin_phone,
+        comin_nit: this.editUserData.comin_nit,
+        comin_address: this.editUserData.comin_address,
+        comin_razon: this.editUserData.comin_razon
+      };
+    }
+
+    if (this.editUserData.us_type == 3 || this.editUserData.us_type == 4) {
+      data = {
+        function: 'UpdateUser',
+        us_id: this.editUserData.us_id,
+        token: localStorage.getItem('us_token'),
+        us_type: this.editUserData.us_type,
+        us_email: this.editUserData.us_email,
+        us_names: this.editUserData.us_names,
+        us_lastnames: this.editUserData.us_lastnames,
+        us_state: this.editUserData.us_state
       };
     }
 

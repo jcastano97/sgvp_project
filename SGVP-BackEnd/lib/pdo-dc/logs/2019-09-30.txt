@@ -1,0 +1,15 @@
+Time : 17:28:07
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' us_email = 'empresan06@email.com' WHERE us_id = '31'' at line 1
+Raw SQL : UPDATE users SET , us_email = 'empresan06@email.com' WHERE us_id = '31'
+
+Time : 17:26:31
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' us_email = 'empresan06@email.com', us_names = 'señor', us_lastnames = 'empresa' at line 1
+Raw SQL : UPDATE users SET , us_email = 'empresan06@email.com', us_names = 'señor', us_lastnames = 'empresa' WHERE us_id = '31'
+
+Time : 17:25:41
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' us_email = 'empresan06@email.com', us_names = 'señor', us_lastnames = 'empresa' at line 1
+Raw SQL : UPDATE users SET , us_email = 'empresan06@email.com', us_names = 'señor', us_lastnames = 'empresa' WHERE us_id = '31'
+
+Time : 17:25:35
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' us_email = 'empresan06@email.com', us_names = 'señor', us_lastnames = 'empresa' at line 1
+Raw SQL : UPDATE users SET , us_email = 'empresan06@email.com', us_names = 'señor', us_lastnames = 'empresa' WHERE us_id = '31'

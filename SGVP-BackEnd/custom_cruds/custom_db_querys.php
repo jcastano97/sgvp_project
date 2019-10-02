@@ -73,7 +73,9 @@ function db_LoginUser($data)
 			$additional_data["st_practice"] =  $query_res[0]['st_practice'];
 			$additional_data["st_agreement_practice"] =  $query_res[0]['st_agreement_practice'];
 			$additional_data["st_acta_practice"] =  $query_res[0]['st_acta_practice'];
+			$additional_data["st_acta_cumplimiento"] =  $query_res[0]['st_acta_cumplimiento'];
 			$additional_data["st_informefinal_practice"] =  $query_res[0]['st_informefinal_practice'];
+			$additional_data["st_paz_salvo"] =  $query_res[0]['st_paz_salvo'];
 
 			$SQL2 = "SELECT stav_document FROM student_avance WHERE stav_student_id = '$us_id'";
 			$query_res2 = $db->query($SQL2);
@@ -219,7 +221,6 @@ function db_NewCompany($data)
 
    	if(!empty($query_res))
    	{
-
     	return array('data' => "exist");
    	}
    	else
@@ -342,6 +343,7 @@ function db_NewUsers($data)
 		$us_lastnames =  $decode_json['data'][$i]['lastnames'];
 		$us_type = 1;
 		$st_career =  $decode_json['data'][$i]['career'];
+		$st_idnumber =  $decode_json['data'][$i]['idNumber'];
 
 		$SQL = "SELECT us_id FROM users WHERE us_email = '$us_email' AND us_type = '$us_type' ";
 		$query_res = $db->query($SQL);
@@ -363,7 +365,7 @@ function db_NewUsers($data)
 			if($us_type == 1){
 				//CREAR EN LA TABLA STUDENT INFO
 				$us_id = $query_res;
-		   		$SQL3 = "INSERT INTO student_info(st_usersid,st_career) VALUES ('$us_id','$st_career')";
+		   		$SQL3 = "INSERT INTO student_info(st_usersid,st_idnumber,st_career) VALUES ('$us_id','$st_idnumber','$st_career')";
 		   		$query_res3 = $db->query($SQL3);
 	   			///
 			}
@@ -460,11 +462,12 @@ function db_UpdateUser($data)
 	$us_names =  $data['us_names'];
 	$us_lastnames =  $data['us_lastnames'];
 	$us_type = $data['us_type'];
+	$us_state = isset($data['us_state']) ? $data['us_state'] : null;
 
-	$SQL = "UPDATE users SET us_email = '$us_email', us_names = '$us_names', us_lastnames = '$us_lastnames' WHERE us_id = '$us_id' ";
+	$SQL = "UPDATE users SET us_email = '$us_email'".($us_names ? ", us_names = '$us_names'": "").($us_lastnames ? ", us_lastnames = '$us_lastnames'": "").($us_state ? ", us_state = '$us_state'": "")." WHERE us_id = '$us_id' ";
 	$query_res = $db->query($SQL);
 	$SQL3 = "";
-	if($us_type == 1){ //Estudiante
+	if($us_type == 1 && isset($data['st_idnumber'])){ //Estudiante
 		$st_idnumber =  $data['st_idnumber'];
 		$st_career =  $data['st_career'];
 		$st_isfree =  $data['st_isfree'];
@@ -473,19 +476,19 @@ function db_UpdateUser($data)
 		$st_phone =  $data['st_phone'];
 		$st_address =  $data['st_address'];
 		$st_schedule =  $data['st_schedule'];
-   		$SQL3 = "UPDATE student_info SET st_idnumber = '$st_idnumber', st_career = '$st_career', st_isfree = $st_isfree, st_teacherassc = $st_teacherassc, st_celphone = '$st_celphone', st_phone = '$st_phone', st_address = '$st_address', st_schedule = '$st_schedule' WHERE  st_usersid = '$us_id'";
+   		$SQL3 = "UPDATE student_info SET st_idnumber = '$st_idnumber'".($st_career ? ", st_career = '$st_career'": "").(isset($st_isfree) ? ", st_isfree = '$st_isfree'": "").($st_teacherassc ? ", st_teacherassc = '$st_teacherassc'": "").($st_celphone ? ", st_celphone = '$st_celphone'": "").($st_phone ? ", st_phone = '$st_phone'": "").($st_address ? ", st_address = '$st_address'": "").($st_schedule ? ", st_schedule = '$st_schedule'": "")." WHERE  st_usersid = '$us_id'";
    		$query_res3 = $db->query($SQL3);
 	}
-	if($us_type == 2){ // Empresa 
+	if($us_type == 2 && (isset($data['comin_name']) || isset($data['comin_razon']) || isset($data['comin_nit']) || isset($data['comin_address']) || isset($data['comin_phone']))){ // Empresa
 		$comin_name =  $data['comin_name'];
 		$comin_razon =  $data['comin_razon'];
 		$comin_nit =  $data['comin_nit'];
 		$comin_address =  $data['comin_address'];
 		$comin_phone =  $data['comin_phone'];
-   		$SQL3 = "UPDATE company_info SET comin_name = '$comin_name', comin_razon = '$comin_razon', comin_nit = '$comin_nit', comin_address = '$comin_address', comin_phone = '$comin_phone' WHERE  comin_usersid = '$us_id'";
+   		$SQL3 = "UPDATE company_info SET comin_usersid = '$us_id'".($comin_name ? ", comin_name = '$comin_name'": "").($comin_razon ? ", comin_razon = '$comin_razon'": "").($comin_nit ? ", comin_nit = '$comin_nit'": "").($comin_address ? ", comin_address = '$comin_address'": "").($comin_phone ? ", comin_phone = '$comin_phone'": "")." WHERE  comin_usersid = '$us_id'";
    		$query_res3 = $db->query($SQL3);
 	}
-	return array('data' => "ok");
+	return array('data' => "ok", 'query' => $SQL);
 }
 
 
@@ -533,6 +536,7 @@ function db_GetUsers($data)
 						CI.comin_possesion,
 						CI.comin_id,
 						CI.comin_agreement,
+					    CI.comin_razon,
 						CI.comin_resolution,
 						ST.st_id,
 						ST.st_usersid,
@@ -549,6 +553,13 @@ function db_GetUsers($data)
 						ST.st_eps,
 						ST.st_enrollment,
 						ST.st_practice,
+						ST.st_agreement_practice,
+						ST.st_cumplimiento_practice,
+						ST.st_evaluacion_practice,
+						ST.st_informefinal_practice,
+						ST.st_acta_cumplimiento,
+						ST.st_paz_salvo,
+						ST.st_acta_practice,
 						PR.pro_name
 						FROM users AS US
 						LEFT JOIN company_info AS CI
@@ -585,6 +596,7 @@ function db_GetUsers($data)
 					CI.comin_possesion,
 					CI.comin_id,
 					CI.comin_agreement,
+					CI.comin_razon,
 					CI.comin_resolution,
 					ST.st_id,
 					ST.st_usersid,
@@ -601,6 +613,13 @@ function db_GetUsers($data)
 					ST.st_eps,
 					ST.st_enrollment,
 					ST.st_practice,
+					ST.st_agreement_practice,
+					ST.st_cumplimiento_practice,
+					ST.st_evaluacion_practice,
+					ST.st_informefinal_practice,
+					ST.st_acta_cumplimiento,
+					ST.st_paz_salvo,
+					ST.st_acta_practice,
 					PR.pro_name
 					FROM users AS US
 					LEFT JOIN company_info AS CI
@@ -697,12 +716,26 @@ function db_GetUsers($data)
 		$query_res = $db->query($SQL);
 		//echo $SQL2;
 		$query_res2 = $db->query($SQL2);
-		if ($us_type == 4) {
+		if ($us_type == 4 || $us_type == 3) {
 			for ($count=0; $count < count($query_res2); $count++) {
 				$SQL3 = "SELECT * FROM teacher_student_tracing WHERE tst_teacher_id = $us_id AND tst_student_id = ".strval($query_res2[$count]['us_id']);
 				$query_res3 = $db->query($SQL3);
 				if (isset($query_res3)) {
-					$query_res2[$count]['tracing'] = $query_res3;
+					$query_res2[$count]['tracing1'] = $query_res3;
+				} else {
+					$query_res2[$count]['tracing1'] = [];
+				}
+				$SQL4 = "SELECT * FROM student_avance WHERE stav_student_id = ".strval($query_res2[$count]['us_id']);
+				$query_res4 = $db->query($SQL4);
+				if (isset($query_res4)) {
+					$query_res2[$count]['advance'] = $query_res4;
+				} else {
+					$query_res2[$count]['advance'] = [];
+				}
+				$SQL5 = "SELECT * FROM student_seguimiento_asesoria WHERE stseas_student_id = ".strval($query_res2[$count]['us_id']);
+				$query_res5 = $db->query($SQL5);
+				if (isset($query_res5)) {
+					$query_res2[$count]['tracing'] = $query_res5;
 				} else {
 					$query_res2[$count]['tracing'] = [];
 				}
@@ -762,6 +795,7 @@ function db_GetOffers($data)
 					CI.comin_possesion,
 					CI.comin_id,
 					CI.comin_agreement,
+					CI.comin_razon,
 					CI.comin_resolution
 					FROM offers AS OF
 					LEFT JOIN users AS US_C
@@ -841,6 +875,7 @@ function db_GetOffers($data)
 					CI.comin_possesion,
 					CI.comin_id,
 					CI.comin_agreement,
+					CI.comin_razon,
 					CI.comin_resolution
 					FROM offers AS OF
 					LEFT JOIN users AS US_C
@@ -1028,10 +1063,33 @@ function db_SaveFile($data)
 	}
 
 	if($us_type == 4){ // Docente
-		$student_id = $data['student_id'];
 		$targetdir = '/uploads/student/';
 		$student_id = $data['student_id'];
 		$targetfile = realpath(dirname(__FILE__))."$targetdir$student_id-1-$file_name";
+
+		if ($file_name == 'avancemensual.pdf') {
+			$SQL = "SELECT COUNT(*) FROM student_avance WHERE stav_student_id = $student_id";
+			$query_res = $db->query($SQL);
+			if(empty($query_res) || $query_res[0]["COUNT(*)"] == 0) {
+				$count = 0;
+			} else {
+				$count = $query_res[0]["COUNT(*)"];
+			}
+			$targetfile = realpath(dirname(__FILE__))."$targetdir$student_id-1-$count-$file_name";
+			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$student_id-1-$count-$file_name";
+		}
+
+		if ($file_name == 'seguimientoasesoria.pdf') {
+			$SQL = "SELECT COUNT(*) FROM student_seguimiento_asesoria WHERE stseas_student_id = $student_id";
+			$query_res = $db->query($SQL);
+			if(empty($query_res) || $query_res[0]["COUNT(*)"] == 0) {
+				$count = 0;
+			} else {
+				$count = $query_res[0]["COUNT(*)"];
+			}
+			$targetfile = realpath(dirname(__FILE__))."$targetdir$student_id-1-$count-$file_name";
+			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$student_id-1-$count-$file_name";
+		}
 
 		if ($file_name == 'seguimiento.pdf') {
 			$targetdir = '/uploads/teacher/';
@@ -1044,6 +1102,11 @@ function db_SaveFile($data)
 			}
 			$targetfile = realpath(dirname(__FILE__))."$targetdir$us_id-$us_type-$student_id-$count-$file_name";
 			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$us_id-$us_type-$student_id-$count-$file_name";
+		}
+
+		if ($file_name == 'pazysalvo.pdf') {
+			$targetfile = realpath(dirname(__FILE__))."$targetdir$student_id-1-$file_name";
+			$actual_link = "http://$_SERVER[HTTP_HOST]/SGVP-BackEnd/custom_cruds$targetdir$student_id-1-$file_name";
 		}
 	}
 
@@ -1107,10 +1170,14 @@ function db_SaveFile($data)
 			case 'conveniopractica.pdf':
 				$SQL3 = "UPDATE student_info SET st_agreement_practice = '$actual_link' WHERE  st_usersid = '$us_id'";
    				$query_res3 = $db->query($SQL3);
-			break;	
+			break;
 			case 'actapractica.pdf':
 				$SQL3 = "UPDATE student_info SET st_acta_practice = '$actual_link' WHERE  st_usersid = '$us_id'";
    				$query_res3 = $db->query($SQL3);
+			break;
+			case 'actacumplimiento.pdf':
+				$SQL3 = "UPDATE student_info SET st_acta_cumplimiento = '$actual_link' WHERE  st_usersid = '$us_id'";
+				$query_res3 = $db->query($SQL3);
 			break;
 			case 'cumplimientopractica.pdf':
 				$SQL3 = "UPDATE student_info SET st_cumplimiento_practice = '$actual_link' WHERE  st_usersid = '$student_id'";
@@ -1129,12 +1196,30 @@ function db_SaveFile($data)
    				$query_res3 = $db->query($SQL3);
 			break;
 			case 'avancemensual.pdf':
-				$SQL3 = "INSERT INTO student_avance(stav_student_id, stav_document) VALUES ('$us_id', '$actual_link')";
-   				$query_res3 = $db->query($SQL3);
+				if($us_type == 4){
+					$SQL3 = "INSERT INTO student_avance(stav_student_id, stav_document) VALUES ('$student_id', '$actual_link')";
+					$query_res3 = $db->query($SQL3);
+				}else{
+					$SQL3 = "INSERT INTO student_avance(stav_student_id, stav_document) VALUES ('$us_id', '$actual_link')";
+					$query_res3 = $db->query($SQL3);
+				}
 			break;
 			case 'seguimientoasesoria.pdf':
-				$SQL3 = "INSERT INTO student_seguimiento_asesoria(stseas_student_id, stseas_document) VALUES ('$us_id', '$actual_link')";
-   				$query_res3 = $db->query($SQL3);
+				if($us_type == 4){
+					$SQL3 = "INSERT INTO student_seguimiento_asesoria(stseas_student_id, stseas_document) VALUES ('$student_id', '$actual_link')";
+					$query_res3 = $db->query($SQL3);
+				}else{
+					$SQL3 = "INSERT INTO student_seguimiento_asesoria(stseas_student_id, stseas_document) VALUES ('$us_id', '$actual_link')";
+					$query_res3 = $db->query($SQL3);
+				}
+			break;
+			case 'pazysalvo.pdf':
+				if($us_type == 4){
+					$SQL3 = "UPDATE student_info SET st_paz_salvo = '$actual_link' WHERE  st_usersid = '$student_id'";
+				}else{
+					$SQL3 = "UPDATE student_info SET st_paz_salvo = '$actual_link' WHERE  st_usersid = '$us_id'";
+				}
+				$query_res3 = $db->query($SQL3);
 			break;
 		}
 		return array('data' => 'ok', 'url' => $actual_link);

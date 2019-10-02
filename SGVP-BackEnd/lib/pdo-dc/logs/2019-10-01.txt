@@ -1,0 +1,7 @@
+Time : 19:35:07
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' comin_name = 'empresan06', comin_razon = 'privada', comin_nit = '1231231', comi' at line 1
+Raw SQL : UPDATE company_info SET , comin_name = 'empresan06', comin_razon = 'privada', comin_nit = '1231231', comin_address = 'direccion', comin_phone = '1231231' WHERE  comin_usersid = '31'
+
+Time : 19:34:27
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' comin_name = 'empresan06', comin_razon = 'privada', comin_nit = '12312313', com' at line 1
+Raw SQL : UPDATE company_info SET , comin_name = 'empresan06', comin_razon = 'privada', comin_nit = '12312313', comin_address = 'direccion', comin_phone = '1231231' WHERE  comin_usersid = '31'

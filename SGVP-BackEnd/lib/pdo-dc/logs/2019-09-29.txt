@@ -1,0 +1,11 @@
+Time : 22:24:28
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' st_celphone = '', st_phone = '', st_address = '', st_schedule = '' WHERE  st_us' at line 1
+Raw SQL : UPDATE student_info SET st_idnumber = '12312313', st_career = 'Ingenieria industrial', st_isfree = 1, st_teacherassc = , st_celphone = '', st_phone = '', st_address = '', st_schedule = '' WHERE  st_usersid = '33'
+
+Time : 22:21:28
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' st_celphone = '323488982', st_phone = '', st_address = '', st_schedule = '' WHE' at line 1
+Raw SQL : UPDATE student_info SET st_idnumber = '', st_career = 'Ingenieria industrial', st_isfree = 1, st_teacherassc = , st_celphone = '323488982', st_phone = '', st_address = '', st_schedule = '' WHERE  st_usersid = '33'
+
+Time : 22:21:06
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' st_celphone = '3234889823', st_phone = '', st_address = '', st_schedule = '' WH' at line 1
+Raw SQL : UPDATE student_info SET st_idnumber = '', st_career = 'Ingenieria industrial', st_isfree = 1, st_teacherassc = , st_celphone = '3234889823', st_phone = '', st_address = '', st_schedule = '' WHERE  st_usersid = '33'

@@ -257,8 +257,8 @@
       <form [formGroup]="basicInfoFormGroupCompany">
         <ng-template matStepLabel>Información básica</ng-template>
         <mat-form-field class="input_text_form_content">
-          <input matInput placeholder="email" type="email" formControlName="us_email" required>
-        </mat-form-field>
+        <input matInput placeholder="email" type="email" formControlName="us_email" required>
+      </mat-form-field>
         <mat-form-field class="input_text_form_content">
           <input type="text" matInput placeholder="Nombres representante" formControlName="us_names" required>
         </mat-form-field>
@@ -324,7 +324,7 @@
           <input style="visibility: hidden" (change)="onFileSelected('fileC', 'cardid.pdf')" #fileC type="file" id="fileC" accept="application/pdf">
         </div>
 
-        <div *ngIf="this.userInfo.dataCompany.razon === 'publica'">
+        <div *ngIf="this.userInfo.dataCompany.razon === 'privada'">
           <p>Acta de posesión (representante legal) formato pdf</p>
           <button type="button" mat-raised-button (click)="filePOS.click()">Choose File</button>
           <a target="_blank" *ngIf="this.userInfo.dataCompany.possesion" href="{{this.userInfo.dataCompany.possesion}}" class="pl-2">{{this.userInfo.dataCompany.possesion}}</a>

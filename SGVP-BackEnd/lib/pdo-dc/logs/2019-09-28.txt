@@ -1,0 +1,7 @@
+Time : 16:26:39
+SQLSTATE[HY000]: General error: 1364 Field 'comin_name' doesn't have a default value
+Raw SQL : INSERT INTO company_info(comin_usersid) VALUES ('24')
+
+Time : 15:36:28
+SQLSTATE[HY000]: General error: 1364 Field 'us_names' doesn't have a default value
+Raw SQL : INSERT INTO users(us_email, us_pass,us_type) VALUES ('empresan00@email.com','e10adc3949ba59abbe56e057f20f883e', 2)
