@@ -55,12 +55,12 @@ export class OffersComponent extends AppComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        if (result.name !== '' && result.description !== '' && result.img !== '') {
+        if (result.name !== '' && result.description !== '') {
           const data = {
             function: 'NewOffer',
             name: result.name,
             description: result.description,
-            img: result.img,
+            img: result.img ? result.img : '',
             us_id: this.userInfo.id,
             token: localStorage.getItem('us_token'),
             us_type: this.userInfo.type

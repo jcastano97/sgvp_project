@@ -427,7 +427,7 @@ function db_NewOffer($data)
 	$us_id =  $data['us_id'];
 	$name =  $data['name'];
 	$description =  $data['description'];
-	$img =  $data['img'];
+	$img = isset($data['img']) && $data['img'] != '' ? $data['img'] : returnImg();
 
 	$SQL = "INSERT INTO offers(name, description, img, company_id) VALUES ('$name','$description','$img','$us_id')";
 	$query_res = $db->query($SQL);
