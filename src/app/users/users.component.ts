@@ -541,4 +541,24 @@ export class UsersComponent extends AppComponent implements OnInit {
       this.usersDocente = response.data;
     });
   }
+
+  public changePhoto(): void {
+    document.getElementById('input-home-photo').click();
+  }
+
+  public fileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    console.log('fileSelected');
+    console.log(input);
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      let base64Image = '';
+      reader.readAsDataURL(input.files[0]);
+      reader.onload = () => {
+        base64Image = reader.result.toString();
+        console.log(base64Image);
+        this.newU.us_img = base64Image;
+      };
+    }
+  }
 }

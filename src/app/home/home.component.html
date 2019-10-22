@@ -119,11 +119,11 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field class="login-input" >
-          <mat-select placeholder="Seleccione una carrera" formControlName="st_career" [(ngModel)]="career" (ngModelChange)="changeCareer(career)">
+          <mat-select placeholder="Seleccione una carrera" formControlName="st_career" [(ngModel)]="idCareer" (ngModelChange)="changeCareer(idCareer)">
             <mat-option [value]="">
               Seleccione una carrera
             </mat-option>
-            <mat-option *ngFor="let program of programs" [value]="program.pro_name">
+            <mat-option *ngFor="let program of programs" [value]="program.pro_id">
               {{program.pro_name}}
             </mat-option>
           </mat-select>
@@ -427,8 +427,8 @@
           </mat-list-item>
           <mat-list-item>
             Carrera: &nbsp;
-            <b *ngIf="currentUview.st_career != null || currentUview.st_career != '' ">{{currentUview.st_career}}</b>
-            <b *ngIf="currentUview.st_career == null || currentUview.st_career == '' " style="font-weight: inherit;color:red;">Falta</b>
+            <b *ngIf="currentUview.pro_name != null || currentUview.pro_name != '' ">{{currentUview.pro_name}}</b>
+            <b *ngIf="currentUview.pro_name == null || currentUview.pro_name == '' " style="font-weight: inherit;color:red;">Falta</b>
           </mat-list-item>
           <mat-list-item>
             Celular: &nbsp;

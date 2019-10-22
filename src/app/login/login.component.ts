@@ -92,7 +92,8 @@ export class LoginComponent extends AppComponent implements OnInit {
         this.userInfo.email = response.additional_data.us_email ? response.additional_data.us_email : '';
         if (this.userInfo.type === 1) {
           this.userInfo.dataStudent.idNumber = response.additional_data.st_idnumber ? response.additional_data.st_idnumber : '';
-          this.userInfo.dataStudent.career = response.additional_data.st_career ? response.additional_data.st_career : '';
+          this.userInfo.dataStudent.idCareer = response.additional_data.st_career ? response.additional_data.st_career : 0;
+          this.userInfo.dataStudent.career = response.additional_data.pro_name ? response.additional_data.pro_name : '';
           this.userInfo.dataStudent.isFree = response.additional_data.st_isfree ? response.additional_data.st_isfree : 0;
           this.userInfo.dataStudent.teacherAssignment
             = response.additional_data.st_teacherassc ? response.additional_data.st_teacherassc : 0;

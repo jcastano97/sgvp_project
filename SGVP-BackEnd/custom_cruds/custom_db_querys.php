@@ -60,6 +60,12 @@ function db_LoginUser($data)
 			$query_res = $db->query($SQL);
 			$additional_data["st_idnumber"] =  $query_res[0]['st_idnumber'];
 			$additional_data["st_career"] =  $query_res[0]['st_career'];
+			if($query_res[0]['st_career']){
+				$pro_id = $query_res[0]['st_career'];
+				$SQL_PRO = "SELECT * FROM programs WHERE pro_id = '$pro_id'";
+				$query_res_pro = $db->query($SQL_PRO);
+				$additional_data["pro_name"] =  $query_res_pro[0]['pro_name'];
+			}
 			$additional_data["st_isfree"] =  $query_res[0]['st_isfree'];
 			$additional_data["st_teacherassc"] =  $query_res[0]['st_teacherassc'];
 			$additional_data["st_celphone"] =  $query_res[0]['st_celphone'];
@@ -342,8 +348,22 @@ function db_NewUsers($data)
 		$us_names =  $decode_json['data'][$i]['names'];
 		$us_lastnames =  $decode_json['data'][$i]['lastnames'];
 		$us_type = 1;
-		$st_career =  $decode_json['data'][$i]['career'];
+		$pro_name =  $decode_json['data'][$i]['career'];
 		$st_idnumber =  $decode_json['data'][$i]['idNumber'];
+		$st_career = null;
+
+		$SQL = "SELECT * FROM programs WHERE pro_name = '$pro_name'";
+		$query_res = $db->query($SQL);
+		if(!empty($query_res)) {
+			$st_career = $query_res[0]['pro_id'];
+		} else {
+			$SQL = "INSERT INTO programs(pro_name, pro_is_active) VALUES ('$pro_name', 1)";
+			if ($db->query($SQL) === TRUE) {
+				$SQL = "SELECT * FROM programs WHERE pro_name = '$pro_name'";
+				$query_res = $db->query($SQL);
+				$st_career = $query_res[0]['pro_id'];
+			}
+		}
 
 		$SQL = "SELECT us_id FROM users WHERE us_email = '$us_email' AND us_type = '$us_type' ";
 		$query_res = $db->query($SQL);
@@ -386,6 +406,7 @@ function db_NewUser($data)
 	$us_names =  $data['query']['names'];
 	$us_lastnames =  $data['query']['lastnames'];
 	$us_type =  $data['query']['us_type'];
+	$us_img =  $data['query']['us_img'];
 	$st_career =  $data['query']['st_career'];
 
 	$SQL = "SELECT us_id FROM users WHERE us_email = '$us_email' AND us_type = '$us_type' ";
@@ -396,7 +417,11 @@ function db_NewUser($data)
 	}
 	else
 	{
-		$SQL = "INSERT INTO users(us_email, us_pass, us_names, us_lastnames, us_type) VALUES ('$us_email','$us_pass','$us_names','$us_lastnames','$us_type')";
+		if($us_img) {
+			$SQL = "INSERT INTO users(us_email, us_pass, us_names, us_lastnames, us_type, us_img) VALUES ('$us_email','$us_pass','$us_names','$us_lastnames','$us_type','$us_img')";
+		} else {
+			$SQL = "INSERT INTO users(us_email, us_pass, us_names, us_lastnames, us_type) VALUES ('$us_email','$us_pass','$us_names','$us_lastnames','$us_type')";
+		}
 		$query_res = $db->query($SQL);
 		if($us_type == 2){
 			//CREAR EN LA TABLA COMPANY INFO
@@ -469,6 +494,7 @@ function db_UpdateUser($data)
 	$SQL3 = "";
 	if($us_type == 1 && isset($data['st_idnumber'])){ //Estudiante
 		$st_idnumber =  $data['st_idnumber'];
+		$st_career =  $data['st_career'];
 		$st_career =  $data['st_career'];
 		$st_isfree =  $data['st_isfree'];
 		$st_teacherassc =  $data['st_teacherassc'];
@@ -751,7 +777,6 @@ function db_GetUsers($data)
 
 function db_GetPrograms($data)
 {
-
 	$db = new Db();
 	$zone = zoneH();
 	date_default_timezone_set($zone);

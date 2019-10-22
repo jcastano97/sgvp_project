@@ -91,7 +91,12 @@
             <input matInput placeholder="Numero de Cedula" [(ngModel)]="newU.idNumber" name="idNumber">
         </mat-form-field>
         <br>
-        Imagen: <input type="file" (change)="filesSelectcreateUserExcel($event)" accept="image/x-png,image/gif,image/jpeg">
+        Imagen:
+        <button mat-button mat-raised-button class="button-change-pass" (click)="changePhoto()">
+          <mat-icon aria-label="Pass">add_a_photo</mat-icon>
+          Cambiar foto
+        </button>
+        <input type="file" id="input-home-photo" accept="image/*" style="display: none" (change)="fileSelected($event)">
         <br>
         <mat-progress-bar mode="indeterminate" color="warn" class="load-2" style="width: 95px;" *ngIf="newUserMethodState"></mat-progress-bar>
         <button mat-button mat-raised-button class="button-create-user" (click)="createUser(typeUserDefault)" [disabled]="newUserMethodState">
@@ -207,8 +212,8 @@
             </mat-list-item>
             <mat-list-item>
               Carrera: &nbsp;
-              <b *ngIf="currentUview.st_career != null || currentUview.st_career != '' ">{{currentUview.st_career}}</b>
-              <b *ngIf="currentUview.st_career == null || currentUview.st_career == '' " style="font-weight: inherit;color:red;">Falta</b>
+              <b *ngIf="currentUview.pro_name != null || currentUview.pro_name != '' ">{{currentUview.pro_name}}</b>
+              <b *ngIf="currentUview.pro_name == null || currentUview.pro_name == '' " style="font-weight: inherit;color:red;">Falta</b>
             </mat-list-item>
             <mat-list-item>
               Celular: &nbsp;
@@ -351,7 +356,7 @@
               <mat-option [value]="">
                 Seleccione una carrera
               </mat-option>
-              <mat-option *ngFor="let program of programs" [value]="program.pro_name">
+              <mat-option *ngFor="let program of programs" [value]="program.pro_id">
                 {{program.pro_name}}
               </mat-option>
             </mat-select>

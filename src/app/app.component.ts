@@ -22,6 +22,7 @@ export class AppComponent {
     email: string,
     dataStudent?: {
       idNumber: string,
+      idCareer: number,
       career: string,
       isFree: number,
       teacherAssignment: number,
@@ -67,6 +68,7 @@ export class AppComponent {
     email: '',
     dataStudent: {
       idNumber: '',
+      idCareer: 0,
       career: '',
       isFree: 0,
       teacherAssignment: 0,

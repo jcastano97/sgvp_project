@@ -17,7 +17,8 @@ export class HomeComponent extends AppComponent implements OnInit {
   documentsFormGroup: FormGroup;
   private usersDocente: any = [];
   teacherAssignment: number;
-  career: string;
+  idCareer: number;
+  carrer: string;
   programs: any = [];
 
   // COMPAÑIA
@@ -55,7 +56,7 @@ export class HomeComponent extends AppComponent implements OnInit {
     this.userType = this.userInfo.type;
     this.email = this.userInfo.email;
     this.teacherAssignment = this.userInfo.dataStudent.teacherAssignment;
-    this.career = this.userInfo.dataStudent.career;
+    this.idCareer = this.userInfo.dataStudent.idCareer;
     this.razon = this.userInfo.dataCompany.razon;
 
     this.basicInfoFormGroup = this.formBuilder.group({
@@ -228,7 +229,7 @@ export class HomeComponent extends AppComponent implements OnInit {
       this.userInfo.dataStudent.address = this.basicInfoFormGroup.getRawValue().st_address;
       this.userInfo.dataStudent.schedule = this.basicInfoFormGroup.getRawValue().st_schedule;
       this.userInfo.dataStudent.teacherAssignment = this.teacherAssignment;
-      this.userInfo.dataStudent.career = this.career;
+      this.userInfo.dataStudent.idCareer = this.idCareer;
       data = {
         function: 'UpdateUser',
         us_id: this.userInfo.id,
@@ -238,7 +239,7 @@ export class HomeComponent extends AppComponent implements OnInit {
         us_names: this.userInfo.names,
         us_lastnames: this.userInfo.lastNames,
         st_idnumber: this.userInfo.dataStudent.idNumber,
-        st_career: this.userInfo.dataStudent.career,
+        st_career: this.userInfo.dataStudent.idCareer,
         st_isfree: this.userInfo.dataStudent.isFree,
         st_teacherassc: this.userInfo.dataStudent.teacherAssignment,
         st_celphone: this.userInfo.dataStudent.cellphone,
